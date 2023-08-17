@@ -16,15 +16,18 @@ export class SidebarComponent {
   routes: IRoutes[] = [
     {
       name: 'Main',
-      path: '/main'
+      path: '/main',
+      icon: 'home'
     },
     {
       name: 'FBI-wanted',
-      path: '/fbi'
+      path: '/fbi',
+      icon: 'gavel'
     },
     {
       name: 'Settings',
-      path: '/settings'
+      path: '/settings',
+      icon: 'settings'
     }
   ]
 

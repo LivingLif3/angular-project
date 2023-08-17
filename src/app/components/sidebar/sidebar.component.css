@@ -25,6 +25,15 @@
 
 .link {
   display: flex;
-  margin-top: 20px;
+  margin-top: 30px;
+  justify-content: center;
+  color: #9a1750;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.iconWrapper {
+  width: 100%;
+  display: flex;
   justify-content: center;
 }

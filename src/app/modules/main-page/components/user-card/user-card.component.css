@@ -1,0 +1,27 @@
+.profileCard {
+  padding: 20px;
+  border: 2px solid #9a1750;
+  width: 90%;
+}
+
+.avatarWrapper {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.field {
+  padding: 10px;
+}
+
+.placeholder {
+  font-weight: bold;
+  color: #9a1750;
+}

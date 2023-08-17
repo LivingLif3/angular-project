@@ -6,7 +6,7 @@ import {IUser} from "../interfaces/user-interface";
 import {user} from "@angular/fire/auth";
 import {fadeInLegacyItems} from "@angular/material/legacy-menu";
 import {collection, collectionData, Firestore} from "@angular/fire/firestore";
-import {finalize, first} from "rxjs";
+import {BehaviorSubject, finalize, first, Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -69,12 +69,18 @@ export class UserAuthService {
   }
 
   getUserRenderData() {
+    const progress$ = new BehaviorSubject<boolean>(this.loadingUserData)
     this.loadingUserData = true
+    progress$.next(this.loadingUserData)
     const collectionInstance = collection(this.firestore, 'users')
     collectionData(collectionInstance).subscribe(v => {
       this.renderUserData = v.find(user => user['email'] === this.userData.email)
       this.loadingUserData = false
+      progress$.next(this.loadingUserData)
+      progress$.complete()
     })
+
+    return progress$
   }
 
   // setUserData(user: any) {

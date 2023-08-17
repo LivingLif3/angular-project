@@ -1,5 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {UserAuthService} from "../../../../../core/services/user-auth.service";
+import {finalize} from "rxjs";
+import {IUserData} from "../../../../../core/interfaces/user-interface";
 
 @Component({
   selector: 'app-main-page',
@@ -9,6 +11,9 @@ import {UserAuthService} from "../../../../../core/services/user-auth.service";
 })
 export class MainPageComponent implements OnInit{
 
+  loadingData: boolean = false
+  userData!: IUserData
+
   constructor(
     public authService: UserAuthService,
     private changeDetection: ChangeDetectorRef
@@ -16,9 +21,14 @@ export class MainPageComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.authService.getUserRenderData()
-    this.changeDetection.markForCheck()
-    console.log(this.authService.loadingUserData, "DADS")
+    this.authService.getUserRenderData().pipe(
+      finalize(() => {
+        this.userData = this.authService.renderUserData
+        this.changeDetection.markForCheck()
+      })
+    ).subscribe(v => {
+      this.loadingData = v
+    })
   }
 
 }

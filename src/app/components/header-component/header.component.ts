@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {UserAuthService} from "../../../core/services/user-auth.service";
 import {user} from "@angular/fire/auth";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -18,7 +19,9 @@ export class HeaderComponent implements OnInit{
 
   constructor(
     public authService: UserAuthService,
-    public ref: ChangeDetectorRef) {
+    public ref: ChangeDetectorRef,
+    private router: Router
+    ) {
   }
 
   ngOnInit() {
@@ -47,5 +50,6 @@ export class HeaderComponent implements OnInit{
   signOut() {
     this.authService.signOut()
     this.isAuth = false
+    this.router.navigate([''])
   }
 }

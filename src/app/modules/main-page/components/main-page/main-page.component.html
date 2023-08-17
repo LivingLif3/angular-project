@@ -1,3 +1,7 @@
-<ng-template [ngIf]="authService.loadingUserData">
+<ng-template [ngIf]="loadingData">
   <mat-spinner></mat-spinner>
 </ng-template>
+
+<app-user-card [userData]="userData"></app-user-card>
+
+

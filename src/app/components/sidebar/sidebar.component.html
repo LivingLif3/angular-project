@@ -5,7 +5,14 @@
 
   <div class="items">
     <ng-container *ngFor="let route of routes">
-      <a  class="link" routerLink="{{route.path}}" >{{route.name}}</a>
+      <ng-container *ngIf="!collapsed; else home">
+        <a class="link" routerLink="{{route.path}}">{{route.name}}</a>
+      </ng-container>
+      <ng-template #home>
+        <div class="iconWrapper">
+          <mat-icon class="link">{{route.icon}}</mat-icon>
+        </div>
+      </ng-template>
     </ng-container>
   </div>
 
