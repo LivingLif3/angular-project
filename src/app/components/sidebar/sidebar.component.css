@@ -1,0 +1,30 @@
+.sidebar {
+  height: calc(100vh - 50px);
+
+  background-color: #e3e2df;
+  position: relative;
+  transition: 0.4s;
+}
+
+.collapsedBtn {
+  position: absolute;
+  right: -32px;
+  bottom: 32px;
+  width: 32px;
+  height: 32px;
+  background-color: #e3e2df;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+}
+
+.link {
+  display: flex;
+  margin-top: 20px;
+  justify-content: center;
+}

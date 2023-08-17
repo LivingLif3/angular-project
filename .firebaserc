@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "angular-project1-56e5d": {
+      "hosting": {
+        "my-app": [
+          "angular-project1-56e5d"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "angular-project1-56e5d"
+  }
+}

@@ -1,0 +1,12 @@
+<div class="sidebar" [ngStyle]="{width: collapsed ? '80px' : '300px'}">
+  <button class="collapsedBtn" (click)="changeCollapse()">
+    {{buttonSymbol}}
+  </button>
+
+  <div class="items">
+    <ng-container *ngFor="let route of routes">
+      <a  class="link" routerLink="{{route.path}}" >{{route.name}}</a>
+    </ng-container>
+  </div>
+
+</div>
