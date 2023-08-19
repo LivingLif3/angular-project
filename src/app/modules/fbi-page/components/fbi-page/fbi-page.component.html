@@ -1,0 +1,40 @@
+
+<div class="wrapper">
+  <span class="link" (click)="changePosts()">edited posts</span>
+  <div class="criminalsWrapper">
+    <ng-template [ngIf]="loading">
+      <mat-spinner></mat-spinner>
+    </ng-template>
+    <div class="header">
+      <button class="button" (click)="showInfo()">Show</button>
+      <button class="button" (click)="hideInfo()">Hide</button>
+    </div>
+    <div class="criminals">
+      <ng-container *ngFor="let criminal of sliceOfCriminals; let i = index">
+        <app-fbi-card
+          [index]="i + page*itemsPerPage"
+          [(chosenIndex)]="chosenElement"
+          [title]="criminal.title"
+          [img]="criminal.images[0].original"
+          [nationality]="criminal.nationality"
+          [hair]="criminal.hair"
+          [race]="criminal.race"
+          [description]="criminal.description"
+        ></app-fbi-card>
+      </ng-container>
+    </div>
+  </div>
+  <ng-container *ngIf="showAdditionalInfo">
+    <app-criminal-info [info]="criminals[chosenElement]"></app-criminal-info>
+  </ng-container>
+</div>
+<div class="paginator">
+  <mat-paginator [length]="criminals.length"
+                 [pageSize]="itemsPerPage"
+                 aria-label="Select page"
+                  (page)="onPaginateChange($event)">
+  </mat-paginator>
+  <button class="paginatorButton" [disabled]="loading" (click)="loadMore()">
+    Load more
+  </button>
+</div>

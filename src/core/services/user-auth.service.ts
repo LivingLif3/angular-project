@@ -1,12 +1,7 @@
 import {Injectable, Optional} from '@angular/core';
-import {AngularFirestore, AngularFirestoreDocument} from "@angular/fire/compat/firestore";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
-import {Router} from "@angular/router";
-import {IUser} from "../interfaces/user-interface";
-import {user} from "@angular/fire/auth";
-import {fadeInLegacyItems} from "@angular/material/legacy-menu";
 import {collection, collectionData, Firestore} from "@angular/fire/firestore";
-import {BehaviorSubject, finalize, first, Observable} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'

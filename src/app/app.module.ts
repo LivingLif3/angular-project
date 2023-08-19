@@ -18,6 +18,7 @@ import {FIREBASE_OPTIONS} from "@angular/fire/compat";
 import {authGuard} from "../core/guards/auth.guard";
 import {getFirestore, provideFirestore} from "@angular/fire/firestore";
 import {MatIconModule} from '@angular/material/icon';
+import {HttpClientModule} from "@angular/common/http";
 
 let routes: Routes = [
   {
@@ -53,7 +54,8 @@ let routes: Routes = [
     provideFirestore(() => getFirestore()),
     AngularFireAuthModule,
     RouterModule.forRoot(routes),
-    MatIconModule
+    MatIconModule,
+    HttpClientModule
   ],
   providers: [
     { provide: FIREBASE_OPTIONS, useValue: environment.firebase } // НУЖНО ПРОВАЙДИТЬ ТОКЕН, Т.К. ВЫКИДЫВАЕТ ОШИБКУ БЕЗ ЭТОГО

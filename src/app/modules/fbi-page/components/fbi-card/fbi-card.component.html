@@ -1,0 +1,12 @@
+<mat-card class="example-card" (click)="choose()">
+  <mat-card-header>
+    <mat-card-title>{{title}}</mat-card-title>
+  </mat-card-header>
+  <img mat-card-image src="{{img}}" alt="no photo">
+  <mat-card-content>
+    <p>Nationality: {{nationality || 'unknown'}}</p>
+    <p>Hair: {{hair || 'unknown'}}</p>
+    <p>Race: {{race || 'unknown'}}</p>
+    <p>Description: {{description || 'none'}}</p>
+  </mat-card-content>
+</mat-card>

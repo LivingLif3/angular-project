@@ -1,3 +1,8 @@
-.content {
+.contentWrapper {
   display: flex;
+  width: 100%;
+}
+
+.content {
+  width: calc(100% - 300px);
 }

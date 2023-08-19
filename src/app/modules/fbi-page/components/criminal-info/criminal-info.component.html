@@ -1,0 +1,37 @@
+<div class="wrapper">
+  <div>
+    <span class="fieldName">Name</span>: {{info.title || "unknown"}}
+  </div>
+  <div class="images">
+    <ng-container *ngFor="let image of info.images">
+      <img src="{{image.original}}" />
+    </ng-container>
+  </div>
+  <div class="field">
+    <span class="fieldName">Age</span>: {{info.age_range || "unknown"}}
+  </div>
+  <div class="field">
+    <span class="fieldName">Sex</span>: {{info.sex || "unknown"}}
+  </div>
+  <div class="field">
+    <span class="fieldName">Weight</span>: {{info.weight || "unknown"}}
+  </div>
+  <div class="field">
+    <span class="fieldName">Race</span>: {{info.race_raw || "unknown"}}
+  </div>
+  <div class="field">
+    <span class="fieldName">Nationality</span>: {{info.nationality || "unknown"}}
+  </div>
+  <div class="field">
+    <span class="fieldName">Hair</span>: {{info.hair_raw || "unknown"}}
+  </div>
+  <div class="field">
+    <span class="fieldName">Eyes</span>: {{info.eyes || "unknown"}}
+  </div>
+  <div class="field">
+    <span class="fieldName">Reward</span>: {{info.reward_text || "unknown"}}
+  </div>
+  <div class="field">
+    <span class="fieldName">Description</span>: {{info.description || "unknown"}}
+  </div>
+</div>
