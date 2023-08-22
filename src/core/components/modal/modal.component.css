@@ -24,6 +24,8 @@
   background: #e3e2df;
   transition: 0.3s transform;
   max-width: 60%;
+  max-height: 450px;
+  overflow-y: auto;
 }
 
 .opened {

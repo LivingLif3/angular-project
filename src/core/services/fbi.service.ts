@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
-import {collection, collectionData, Firestore} from "@angular/fire/firestore";
+import {addDoc, collection, collectionData, Firestore} from "@angular/fire/firestore";
 
 @Injectable({
   providedIn: 'root'
@@ -21,13 +21,22 @@ export class FbiService {
     })
   }
 
+  addEditedPost(post: any) {
+      const collectionInstance = collection(this.firestore, 'posts')
+      addDoc(collectionInstance, post).then(() => {
+        console.log('DATA ADD SUCCESSFULLY')
+      })
+  }
+
   getEditedPosts() {
+    console.log("HERE")
     const progress$ = new BehaviorSubject<boolean>(this.loadingPostsData)
     this.loadingPostsData = true
     progress$.next(this.loadingPostsData)
     const collectionInstance = collection(this.firestore, 'posts')
     collectionData(collectionInstance).subscribe(v => {
       this.editedPosts = v
+      console.log(this.editedPosts)
       this.loadingPostsData = false
       progress$.next(this.loadingPostsData)
       progress$.complete()

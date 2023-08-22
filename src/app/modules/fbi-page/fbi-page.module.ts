@@ -10,6 +10,14 @@ import { FbiCardComponent } from './components/fbi-card/fbi-card.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { CriminalInfoComponent } from './components/criminal-info/criminal-info.component';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {ToggleButtonPipe} from "../../../core/pipes/toggle-button.pipe";
+import {ModalComponent} from "../../../core/components/modal/modal.component";
+
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatStepperModule} from '@angular/material/stepper';
+import {ReactiveFormsModule} from "@angular/forms";
+import {MatIconModule} from '@angular/material/icon';
 
 const routes: Routes = [
   {
@@ -23,7 +31,8 @@ const routes: Routes = [
   declarations: [
     FbiPageComponent,
     FbiCardComponent,
-    CriminalInfoComponent
+    CriminalInfoComponent,
+    ToggleButtonPipe
   ],
   imports: [
     CommonModule,
@@ -32,7 +41,13 @@ const routes: Routes = [
     MatButtonModule,
     MatCardModule,
     MatProgressSpinnerModule,
-    MatGridListModule
+    MatGridListModule,
+    ModalComponent,
+    MatStepperModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatIconModule
   ]
 })
 export class FbiPageModule { }

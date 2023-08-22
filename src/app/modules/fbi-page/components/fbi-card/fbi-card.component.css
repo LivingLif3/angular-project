@@ -1,3 +1,18 @@
 .example-card {
   width: 300px;
 }
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  height: 10px;
+}
+
+.headerInfo {
+  display: flex;
+  align-items: center;
+}
+
+.editIcon {
+  position: absolute;
+}

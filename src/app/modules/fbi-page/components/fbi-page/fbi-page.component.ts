@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {FbiService} from "../../../../../core/services/fbi.service";
+import {FormBuilder} from "@angular/forms";
 
 @Component({
   selector: 'app-fbi-page',
@@ -7,11 +8,17 @@ import {FbiService} from "../../../../../core/services/fbi.service";
   styleUrls: ['./fbi-page.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FbiPageComponent implements OnInit{
+export class FbiPageComponent implements OnInit {
+
+  showModal: boolean = false
 
   showEditedPosts: boolean = false
+  editedPosts: any = []
 
   chosenElement: number = 0
+  chosenEditedElement: number = 0
+  chosenEditedElementId: string = ''
+
   showAdditionalInfo: boolean = false
 
   loading: boolean = true
@@ -20,16 +27,41 @@ export class FbiPageComponent implements OnInit{
   criminals: any = []
 
   page: number = 0
+  editedPage: number = 0
+
   itemsPerPage: number = 4
   sliceOfCriminals: any = []
 
+  editFormGroup = this._formBuilder.group({
+    title: [''],
+    age_range: [''],
+    sex: [''],
+    weight: [''],
+    race_raw: [''],
+    nationality: [''],
+    hair_raw: [''],
+    eyes: [''],
+    reward_text: [''],
+    description: ['']
+  })
+
   constructor(
     private fbiService: FbiService,
-    private changeDetectionRef: ChangeDetectorRef
+    private changeDetectionRef: ChangeDetectorRef,
+    private _formBuilder: FormBuilder
   ) {
   }
 
   ngOnInit() {
+    console.log('HEY')
+    this.fbiService.getEditedPosts().subscribe((v) => {
+      if(!v) {
+        this.editedPosts = this.fbiService.editedPosts
+        this.updateEditStatus()
+        this.changeDetectionRef.markForCheck()
+      }
+    })
+    console.log(this.editedPosts, "HEY@")
     this.fbiService.getPeopleByPage(this.list).subscribe(v => {
       this.loading = false
       this.criminals = v.items
@@ -38,9 +70,13 @@ export class FbiPageComponent implements OnInit{
     })
   }
 
-  onPaginateChange(event: any) {
-    this.page = event.pageIndex
-    this.sliceOfCriminals = this.criminals.slice(this.page*this.itemsPerPage, (this.page + 1)*this.itemsPerPage)
+  onPaginateChange(event?: any) {
+    if (this.showEditedPosts) {
+      this.editedPage = event.pageIndex
+    } else {
+      this.page = event.pageIndex
+    }
+    this.sliceOfCriminals = this.criminals.slice(this.page * this.itemsPerPage, (this.page + 1) * this.itemsPerPage)
     console.log(this.sliceOfCriminals)
   }
 
@@ -51,6 +87,7 @@ export class FbiPageComponent implements OnInit{
       this.loading = false
       console.log(v.items)
       this.criminals.push(...v.items)
+      this.updateEditStatus()
       this.changeDetectionRef.markForCheck()
     })
   }
@@ -64,6 +101,53 @@ export class FbiPageComponent implements OnInit{
   }
 
   changePosts() {
-    this.fbiService.getEditedPosts()
+    this.showEditedPosts = !this.showEditedPosts
+    if (this.showEditedPosts) {
+      this.fbiService.getEditedPosts().subscribe(v => {
+        if (!v) {
+          this.editedPosts = this.fbiService.editedPosts
+          this.sliceOfCriminals = this.editedPosts.slice(this.editedPage * this.itemsPerPage, (this.editedPage + 1) * this.itemsPerPage)
+          this.updateChosenEditedElement()
+          this.changeDetectionRef.markForCheck()
+        }
+        this.loading = v
+      })
+    } else {
+      this.sliceOfCriminals = this.criminals.slice(this.page * this.itemsPerPage, (this.page + 1) * this.itemsPerPage)
+      this.updateEditStatus()
+      this.changeDetectionRef.markForCheck()
+    }
   }
+
+  updateEditStatus() {
+    for (let i = 0; i < this.editedPosts.length; i++) {
+      let index = this.criminals.findIndex((el: any) => el['@id'] === this.editedPosts[i]['@id'])
+      if (index !== -1) {
+        this.criminals[index].edit = true
+        console.log(this.criminals[index], "LALALAL")
+      }
+    }
+  }
+
+  async edit() {
+    let data = {...this.criminals[this.chosenElement]}
+    console.log(this.editFormGroup)
+    for (let key in this.editFormGroup.controls) {
+      console.log(typeof key)
+      if (this.editFormGroup.get(key)?.value) {
+        data[key] = this.editFormGroup.get(key)?.value
+      }
+    }
+    console.log(data)
+    // await this.fbiService.addEditedPost(data)
+  }
+
+  updateChosenEditedElement() {
+    let index = this.editedPosts.findIndex((el: any) => el['@id'] === this.chosenEditedElementId)
+    if(index !== -1) {
+      this.chosenEditedElement = index
+    }
+  }
+
+
 }

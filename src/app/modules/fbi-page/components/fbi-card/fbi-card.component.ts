@@ -8,6 +8,8 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@
 })
 export class FbiCardComponent {
 
+  @Input() id?: string
+  @Input() editStatus?: boolean | undefined = false
   @Input() index!: number;
   @Input() title!: string;
   @Input() img!: string;
@@ -16,11 +18,36 @@ export class FbiCardComponent {
   @Input() race!: string;
   @Input() description!: string;
 
-  @Input() chosenIndex!: number
+  @Input() updateChosenEditedElement!: Function
 
+  @Input() chosenIndex!: number
   @Output() chosenIndexChange = new EventEmitter()
+
+  @Input() edit!: boolean
+  @Output() editChange = new EventEmitter()
+
+  @Input() chosenEditedElementId?: string
+  @Output() chosenEditedElementIdChange = new EventEmitter()
+
+  @Input() showEditedPosts?: boolean
+  @Output() showEditedPostsChange = new EventEmitter()
 
   choose() {
     this.chosenIndexChange.emit(this.index)
+    if(this.id && this.editStatus) {
+      this.chosenEditedElementIdChange.emit(this.id)
+    }
+  }
+
+  changePage() {
+    if(this.editStatus) {
+      this.choose()
+      this.updateChosenEditedElement()
+      this.showEditedPostsChange.emit(true)
+    }
+  }
+
+  onEdit() {
+    this.editChange.emit(true)
   }
 }
