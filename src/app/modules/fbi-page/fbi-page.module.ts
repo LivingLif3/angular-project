@@ -18,6 +18,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatStepperModule} from '@angular/material/stepper';
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatIconModule} from '@angular/material/icon';
+import {DefaultValuePipe} from "../../../core/pipes/default-value.pipe";
 
 const routes: Routes = [
   {
@@ -32,7 +33,8 @@ const routes: Routes = [
     FbiPageComponent,
     FbiCardComponent,
     CriminalInfoComponent,
-    ToggleButtonPipe
+    ToggleButtonPipe,
+    DefaultValuePipe
   ],
   imports: [
     CommonModule,

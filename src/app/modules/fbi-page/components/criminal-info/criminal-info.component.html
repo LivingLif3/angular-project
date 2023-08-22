@@ -1,6 +1,6 @@
 <div class="wrapper">
   <div>
-    <span class="fieldName">Name</span>: {{info.title || "unknown"}}
+    <span class="fieldName">Name</span>: {{info.title | defaultValue}}
   </div>
   <div class="images">
     <ng-container *ngFor="let image of info.images">
@@ -8,30 +8,30 @@
     </ng-container>
   </div>
   <div class="field">
-    <span class="fieldName">Age</span>: {{info.age_range || "unknown"}}
+    <span class="fieldName">Age</span>: {{info.age_range | defaultValue }}
   </div>
   <div class="field">
-    <span class="fieldName">Sex</span>: {{info.sex || "unknown"}}
+    <span class="fieldName">Sex</span>: {{info.sex | defaultValue}}
   </div>
   <div class="field">
-    <span class="fieldName">Weight</span>: {{info.weight || "unknown"}}
+    <span class="fieldName">Weight</span>: {{info.weight | defaultValue}}
   </div>
   <div class="field">
-    <span class="fieldName">Race</span>: {{info.race_raw || "unknown"}}
+    <span class="fieldName">Race</span>: {{info.race_raw | defaultValue}}
   </div>
   <div class="field">
-    <span class="fieldName">Nationality</span>: {{info.nationality || "unknown"}}
+    <span class="fieldName">Nationality</span>: {{info.nationality | defaultValue}}
   </div>
   <div class="field">
-    <span class="fieldName">Hair</span>: {{info.hair_raw || "unknown"}}
+    <span class="fieldName">Hair</span>: {{info.hair_raw | defaultValue}}
   </div>
   <div class="field">
-    <span class="fieldName">Eyes</span>: {{info.eyes || "unknown"}}
+    <span class="fieldName">Eyes</span>: {{info.eyes | defaultValue}}
   </div>
   <div class="field">
-    <span class="fieldName">Reward</span>: {{info.reward_text || "unknown"}}
+    <span class="fieldName">Reward</span>: {{info.reward_text | defaultValue}}
   </div>
   <div class="field">
-    <span class="fieldName">Description</span>: {{info.description || "unknown"}}
+    <span class="fieldName">Description</span>: {{info.description | defaultValue}}
   </div>
 </div>

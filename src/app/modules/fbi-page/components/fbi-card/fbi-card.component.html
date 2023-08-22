@@ -10,9 +10,9 @@
   </mat-card-header>
   <img mat-card-image src="{{img}}" alt="no photo">
   <mat-card-content>
-    <p>Nationality: {{nationality || 'unknown'}}</p>
-    <p>Hair: {{hair || 'unknown'}}</p>
-    <p>Race: {{race || 'unknown'}}</p>
+    <p>Nationality: {{nationality | defaultValue}}</p>
+    <p>Hair: {{hair | defaultValue}}</p>
+    <p>Race: {{race | defaultValue}}</p>
     <p>Description: {{description || 'none'}}</p>
   </mat-card-content>
 </mat-card>
