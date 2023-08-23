@@ -53,7 +53,6 @@ export class FbiPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('HEY')
     this.fbiService.getEditedPosts().subscribe((v) => {
       if(!v) {
         this.editedPosts = this.fbiService.editedPosts
@@ -61,11 +60,11 @@ export class FbiPageComponent implements OnInit {
         this.changeDetectionRef.markForCheck()
       }
     })
-    console.log(this.editedPosts, "HEY@")
     this.fbiService.getPeopleByPage(this.list).subscribe(v => {
       this.loading = false
       this.criminals = v.items
       this.sliceOfCriminals = this.criminals.slice(0, 4)
+      this.updateEditStatus()
       this.changeDetectionRef.markForCheck()
     })
   }
@@ -77,7 +76,6 @@ export class FbiPageComponent implements OnInit {
       this.page = event.pageIndex
     }
     this.sliceOfCriminals = this.criminals.slice(this.page * this.itemsPerPage, (this.page + 1) * this.itemsPerPage)
-    console.log(this.sliceOfCriminals)
   }
 
   loadMore() {
@@ -85,7 +83,6 @@ export class FbiPageComponent implements OnInit {
     this.list += 1
     this.fbiService.getPeopleByPage(this.list).subscribe(v => {
       this.loading = false
-      console.log(v.items)
       this.criminals.push(...v.items)
       this.updateEditStatus()
       this.changeDetectionRef.markForCheck()
@@ -124,22 +121,18 @@ export class FbiPageComponent implements OnInit {
       let index = this.criminals.findIndex((el: any) => el['@id'] === this.editedPosts[i]['@id'])
       if (index !== -1) {
         this.criminals[index].edit = true
-        console.log(this.criminals[index], "LALALAL")
       }
     }
   }
 
   async edit() {
-    let data = {...this.criminals[this.chosenElement]}
     console.log(this.editFormGroup)
+    let data = {...this.criminals[this.chosenElement]}
     for (let key in this.editFormGroup.controls) {
-      console.log(typeof key)
       if (this.editFormGroup.get(key)?.value) {
         data[key] = this.editFormGroup.get(key)?.value
       }
     }
-    console.log(data)
-    // await this.fbiService.addEditedPost(data)
   }
 
   updateChosenEditedElement() {

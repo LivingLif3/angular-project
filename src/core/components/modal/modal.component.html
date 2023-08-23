@@ -1,6 +1,6 @@
 <div class="modal" [ngClass]="{opened: isOpen}">
   <div class="overlay" (click)="setIsOpen()">
-    <div class="content" (click)="onContentClick($event)">
+    <div class="content" (click)="onContentClick($event)" [ngStyle]="{'background-color': color}">
       <ng-content></ng-content>
     </div>
   </div>

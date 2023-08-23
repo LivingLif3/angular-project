@@ -1,0 +1,30 @@
+.wrapper {
+  display: flex;
+  width: 80px;
+  height: 50px;
+}
+
+.button {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  /*color: #26519c*/
+}
+
+.male {
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  padding: 5px;
+}
+
+.female {
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 5px;
+}
+
+.active {
+  background-color: #3189d7;
+  color: white;
+  cursor: default;
+}

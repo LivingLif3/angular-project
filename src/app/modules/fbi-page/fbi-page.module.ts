@@ -16,9 +16,15 @@ import {ModalComponent} from "../../../core/components/modal/modal.component";
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatStepperModule} from '@angular/material/stepper';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatIconModule} from '@angular/material/icon';
 import {DefaultValuePipe} from "../../../core/pipes/default-value.pipe";
+import {GenderComponent} from "../../../core/components/gender/gender.component";
+import { AddFieldComponent } from './components/add-field/add-field.component';
+import {MatSelectModule} from '@angular/material/select';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 const routes: Routes = [
   {
@@ -34,7 +40,8 @@ const routes: Routes = [
     FbiCardComponent,
     CriminalInfoComponent,
     ToggleButtonPipe,
-    DefaultValuePipe
+    DefaultValuePipe,
+    AddFieldComponent
   ],
   imports: [
     CommonModule,
@@ -49,7 +56,13 @@ const routes: Routes = [
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatIconModule
+    MatIconModule,
+    GenderComponent,
+    MatSelectModule,
+    FormsModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MatCheckboxModule
   ]
 })
 export class FbiPageModule { }

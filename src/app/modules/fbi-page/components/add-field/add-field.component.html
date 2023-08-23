@@ -1,0 +1,46 @@
+<div class="addField">
+  <mat-form-field>
+    <mat-label>Enter name of field</mat-label>
+    <input type="text" matInput [value]="name" (change)="changeName($event)">
+  </mat-form-field>
+  <!--*ngIf="selectValue !== 'date'; else date"-->
+  <ng-container [ngSwitch]="selectValue">
+    <ng-template ngSwitchCase="string">
+      <mat-form-field>
+        <mat-label>Enter value of field</mat-label>
+        <input type="text" matInput [value]="value" (change)="changeInput($event)">
+      </mat-form-field>
+    </ng-template>
+    <ng-template ngSwitchCase="number">
+      <mat-form-field>
+        <mat-label>Enter value of field</mat-label>
+        <input type="number" matInput [value]="value" (change)="changeInput($event)">
+      </mat-form-field>
+    </ng-template>
+    <ng-template ngSwitchCase="boolean">
+      <mat-checkbox class="example-margin" [ngModel]="value" (change)="changeInput($event)">Checked</mat-checkbox>
+      <!--      <input type="checkbox" matInput [value]="value" (change)="changeInput($event)">-->
+    </ng-template>
+    <ng-template ngSwitchCase="date">
+      <mat-form-field>
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepicker]="picker" [value]="value" (change)="changeInput($event)">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </ng-template>
+  </ng-container>
+
+  <ng-template [ngIf]="validateError">
+    <p class="error">type incompatibility</p>
+  </ng-template>
+  <mat-form-field>
+    <mat-label>Choose type</mat-label>
+    <mat-select [(ngModel)]="selectValue" (selectionChange)="changeSelect()">
+      <mat-option *ngFor="let type of types" [value]="type">
+        {{type}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

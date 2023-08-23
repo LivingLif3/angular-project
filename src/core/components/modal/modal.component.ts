@@ -13,6 +13,8 @@ export class ModalComponent {
 
   @Input() isOpen: boolean = false
 
+  @Input() color?: string
+
   @Output() isOpenChange = new EventEmitter()
 
   setIsOpen(): void {

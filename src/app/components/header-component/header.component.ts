@@ -28,6 +28,7 @@ export class HeaderComponent implements OnInit{
     if(localStorage.getItem('user')) {
       this.isAuth = true
     }
+    console.log(typeof true)
   }
 
   setOpenModal(): void {
