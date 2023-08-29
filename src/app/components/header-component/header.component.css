@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: space-between;
 
-  background: #e3e2df;
+  background: #2C4A52;
 }
 
 .data {
@@ -15,10 +15,10 @@
 
 .button {
   margin-right: 30px;
-  background-color: #9a1750;
+  background-color: #F4EBDB;
 
   width: 100px;
-  color: white;
+  color: #537072;
   height: 30px;
 
   font-size: 18px;
@@ -40,11 +40,11 @@
 
 .label {
   margin-bottom: 20px;
-  color: #9a1750;
+  color: #2C4A52;
 }
 
 .mat-raised-button {
-  background-color: #9a1750;
+  background-color: #2C4A52;
 }
 
 .buttonContainer {

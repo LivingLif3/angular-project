@@ -25,6 +25,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { AddedFieldInfoComponent } from './components/added-field-info/added-field-info.component';
 
 const routes: Routes = [
   {
@@ -41,7 +42,8 @@ const routes: Routes = [
     CriminalInfoComponent,
     ToggleButtonPipe,
     DefaultValuePipe,
-    AddFieldComponent
+    AddFieldComponent,
+    AddedFieldInfoComponent
   ],
   imports: [
     CommonModule,

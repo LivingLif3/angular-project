@@ -1,4 +1,5 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
+import {AdditionalFieldsService} from "../../../../../core/services/additional-fields.service";
 
 @Component({
   selector: 'app-add-field',
@@ -24,6 +25,14 @@ export class AddFieldComponent {
   @Input() name: string = ""
   @Output() nameChange = new EventEmitter()
 
+  @Input() type: string = "string"
+  @Output() typeChange = new EventEmitter()
+
+  constructor(
+    public fieldsService: AdditionalFieldsService
+  ) {
+  }
+
   changeInput(event: any) {
     if(!this.getErrorStatus()) {
       this.validateError = this.getErrorStatus()
@@ -38,9 +47,9 @@ export class AddFieldComponent {
   }
 
   getErrorStatus(): boolean {
-    if(this.selectValue === typeof this.value) {
+    if(this.type === typeof this.value) {
       return false
-    } else if(this.selectValue === 'date' && this.isValidDate(this.value)) {
+    } else if(this.type === 'date' && this.isValidDate(this.value)) {
       return false
     } else {
       return true
@@ -52,15 +61,30 @@ export class AddFieldComponent {
   }
 
   changeSelect() {
-    if(this.selectValue === 'string') {
+    if(this.type === 'string') {
       this.value = ''
-    } else if(this.selectValue === 'number') {
+      this.typeChange.emit(this.type)
+    } else if(this.type === 'number') {
       this.value = 0
-    } else if(this.selectValue === 'boolean') {
+      this.typeChange.emit(this.type)
+    } else if(this.type === 'boolean') {
       this.value = false
+      this.typeChange.emit(this.type)
     } else {
       this.value = ""
+      this.typeChange.emit(this.type)
     }
+  }
+
+  addField() {
+    this.fieldsService.addField({
+      name: this.name,
+      value: this.value
+    },
+      this.type)
+    this.nameChange.emit("")
+    this.valueChange.emit("")
+    this.typeChange.emit("string")
   }
 
 }

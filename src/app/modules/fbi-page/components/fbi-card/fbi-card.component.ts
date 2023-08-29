@@ -1,4 +1,5 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
+import {AdditionalFieldsService} from "../../../../../core/services/additional-fields.service";
 
 @Component({
   selector: 'app-fbi-card',
@@ -32,6 +33,11 @@ export class FbiCardComponent {
   @Input() showEditedPosts?: boolean
   @Output() showEditedPostsChange = new EventEmitter()
 
+  constructor(
+    private additionalService: AdditionalFieldsService
+  ) {
+  }
+
   choose() {
     this.chosenIndexChange.emit(this.index)
     if(this.id && this.editStatus) {
@@ -48,6 +54,7 @@ export class FbiCardComponent {
   }
 
   onEdit() {
+    this.additionalService.clearFields()
     this.editChange.emit(true)
   }
 }

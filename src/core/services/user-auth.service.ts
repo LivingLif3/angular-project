@@ -2,6 +2,7 @@ import {Injectable, Optional} from '@angular/core';
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {collection, collectionData, Firestore} from "@angular/fire/firestore";
 import {BehaviorSubject} from "rxjs";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,12 @@ export class UserAuthService {
   isAuth: boolean = false
   error: any
   loadingUserData: boolean = false
+  isAuthStatus$ = new BehaviorSubject<boolean>(this.isAuth)
 
   constructor(
     public afAuth: AngularFireAuth,
-    public firestore: Firestore
+    public firestore: Firestore,
+    private router: Router
   ) {
     this.afAuth.authState.subscribe((user) => {
       if(user) {
@@ -25,11 +28,14 @@ export class UserAuthService {
         this.userData = userDataTemp.user
         localStorage.setItem('user', JSON.stringify(this.userData))
         JSON.parse(localStorage.getItem('user')!)
+        this.isAuthStatus$.next(this.isAuth)
+        this.router.navigate(['/fbi'])
       } else {
         this.isAuth = false
         this.userData = null
         localStorage.removeItem('user')
         JSON.parse(localStorage.getItem('user')!)
+        this.isAuthStatus$.next(this.isAuth)
       }
     })
   }
@@ -44,6 +50,8 @@ export class UserAuthService {
           this.userData = userDataTemp.user
           console.log(this.userData, 'sign in')
           localStorage.setItem('user', JSON.stringify(this.userData))
+          this.isAuthStatus$.next(this.isAuth)
+          this.router.navigate(['/fbi'])
           return this.userData
         }
       })
@@ -51,6 +59,7 @@ export class UserAuthService {
         this.isAuth = false
         this.userData = null
         localStorage.removeItem('user')
+        this.isAuthStatus$.next(this.isAuth)
         return null
       })
   }
@@ -60,6 +69,7 @@ export class UserAuthService {
       this.isAuth = false
       this.userData = null
       localStorage.removeItem('user')
+      this.isAuthStatus$.next(this.isAuth)
     })
   }
 

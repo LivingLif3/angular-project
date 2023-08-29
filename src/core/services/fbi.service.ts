@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
-import {addDoc, collection, collectionData, Firestore} from "@angular/fire/firestore";
+import {addDoc, collection, collectionData, doc, Firestore, updateDoc} from "@angular/fire/firestore";
 
 @Injectable({
   providedIn: 'root'
@@ -43,5 +43,20 @@ export class FbiService {
     })
 
     return progress$
+  }
+
+  updateAddedFields(id: string, fields: any) {
+    const docInstance = doc(this.firestore, 'posts', id)
+    const updateData = {
+      added_fields: fields
+    }
+
+    updateDoc(docInstance, updateData).then(
+      () => {
+        console.log("DATA UPDATED")
+      }
+    ).catch(err => {
+      console.log(err)
+    })
   }
 }

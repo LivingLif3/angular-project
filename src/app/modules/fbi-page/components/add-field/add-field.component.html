@@ -4,7 +4,7 @@
     <input type="text" matInput [value]="name" (change)="changeName($event)">
   </mat-form-field>
   <!--*ngIf="selectValue !== 'date'; else date"-->
-  <ng-container [ngSwitch]="selectValue">
+  <ng-container [ngSwitch]="type">
     <ng-template ngSwitchCase="string">
       <mat-form-field>
         <mat-label>Enter value of field</mat-label>
@@ -37,10 +37,11 @@
   </ng-template>
   <mat-form-field>
     <mat-label>Choose type</mat-label>
-    <mat-select [(ngModel)]="selectValue" (selectionChange)="changeSelect()">
+    <mat-select [(ngModel)]="type" (selectionChange)="changeSelect()">
       <mat-option *ngFor="let type of types" [value]="type">
         {{type}}
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <button mat-button (click)="addField()">Add</button>
 </div>

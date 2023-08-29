@@ -1,0 +1,45 @@
+.addedFieldInfo {
+  position: relative;
+  display: block;
+  background-color: #ececec;
+  padding: 10px;
+  overflow-x: auto;
+  min-height: 40px;
+}
+
+.info {
+  width: 100%;
+  display: flex;
+}
+
+.key {
+  color: #9a1750;
+  font-weight: bold;
+}
+
+.value {
+  max-width: 280px;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  word-break:break-all;
+}
+
+.buttons {
+  opacity: 0;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0 0 0 / 60%);
+  transition: opacity .4s linear;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.addedFieldInfo:hover .buttons {
+  opacity: 1;
+}

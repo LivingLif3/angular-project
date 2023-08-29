@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {FbiService} from "../../../../../core/services/fbi.service";
 import {FormBuilder} from "@angular/forms";
+import {AdditionalFieldsService} from "../../../../../core/services/additional-fields.service";
 
 @Component({
   selector: 'app-fbi-page',
@@ -9,6 +10,8 @@ import {FormBuilder} from "@angular/forms";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FbiPageComponent implements OnInit {
+
+  filtredAgeValue: string = ''
 
   showModal: boolean = false
 
@@ -32,6 +35,12 @@ export class FbiPageComponent implements OnInit {
   itemsPerPage: number = 4
   sliceOfCriminals: any = []
 
+  additionalFieldInfo = {
+    key: "",
+    value: "",
+    type: "string"
+  }
+
   editFormGroup = this._formBuilder.group({
     title: [''],
     age_range: [''],
@@ -48,7 +57,8 @@ export class FbiPageComponent implements OnInit {
   constructor(
     private fbiService: FbiService,
     private changeDetectionRef: ChangeDetectorRef,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    public fieldsService: AdditionalFieldsService
   ) {
   }
 
@@ -133,6 +143,12 @@ export class FbiPageComponent implements OnInit {
         data[key] = this.editFormGroup.get(key)?.value
       }
     }
+    if(Object.keys(this.fieldsService.additionalFields).length) {
+      data.added_fields = this.fieldsService.additionalFields
+    } else {
+      data.added_fields = null
+    }
+    this.fbiService.addEditedPost(data)
   }
 
   updateChosenEditedElement() {
@@ -142,5 +158,9 @@ export class FbiPageComponent implements OnInit {
     }
   }
 
+  filterNumericInput(event: any) {
+    const filteredValue = event.target.value.replace(/[^0-9]/g, '');
+    this.editFormGroup.get('age_range')!.setValue(filteredValue, { emitEvent: false });
+  }
 
 }

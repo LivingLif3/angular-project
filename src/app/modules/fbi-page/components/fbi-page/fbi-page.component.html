@@ -39,7 +39,7 @@
   </ng-container>
 </div>
 <div class="paginator">
-  <mat-paginator [length]="criminals.length"
+  <mat-paginator [length]="!showEditedPosts ? criminals.length : editedPosts.length"
                  [pageSize]="itemsPerPage"
                  aria-label="Select page"
                  (page)="onPaginateChange($event)">
@@ -82,7 +82,8 @@
         <ng-template matStepLabel>Fill out age</ng-template>
         <mat-form-field>
           <mat-label>Age</mat-label>
-          <input matInput placeholder="Last name, First name" formControlName="age_range" required>
+          <input matInput [(ngModel)]="filtredAgeValue"
+                 (input)="filterNumericInput($event)" placeholder="Last name, First name" formControlName="age_range" required>
         </mat-form-field>
         <div>
           <button mat-button matStepperNext>Next</button>
@@ -168,9 +169,27 @@
     </form>
     <mat-step>
       <ng-template matStepLabel>Create new fields</ng-template>
-      <div>
-        <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+      <div class="addFieldButtonWrapper">
+        <button class="addFieldButton" mat-button>
+          <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 448 512">
+            <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+            <path
+              d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
+          </svg>
+        </button>
       </div>
+      <ng-container *ngFor="let element of fieldsService.additionalFields | keyvalue">
+        <app-added-field-info [fieldInfo]="element"
+                              [(name)]="additionalFieldInfo.key"
+                              [(value)]="additionalFieldInfo.value"
+                              [(type)]="additionalFieldInfo.type"
+        ></app-added-field-info>
+      </ng-container>
+      <app-add-field
+        [(name)]="additionalFieldInfo.key"
+        [(value)]="additionalFieldInfo.value"
+        [(type)]="additionalFieldInfo.type"
+      ></app-add-field>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Done</ng-template>
@@ -182,5 +201,4 @@
       </div>
     </mat-step>
   </mat-stepper>
-  <app-add-field></app-add-field>
 </app-modal>
