@@ -24,7 +24,7 @@
     <ng-template ngSwitchCase="date">
       <mat-form-field>
         <mat-label>Choose a date</mat-label>
-        <input matInput [matDatepicker]="picker" [value]="value" (change)="changeInput($event)">
+        <input matInput [matDatepicker]="picker" [value]="value" (dateChange)="changeInput($event)">
         <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>

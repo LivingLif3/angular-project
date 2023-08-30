@@ -180,6 +180,7 @@
       </div>
       <ng-container *ngFor="let element of fieldsService.additionalFields | keyvalue">
         <app-added-field-info [fieldInfo]="element"
+                              [elementType]="element.value"
                               [(name)]="additionalFieldInfo.key"
                               [(value)]="additionalFieldInfo.value"
                               [(type)]="additionalFieldInfo.type"

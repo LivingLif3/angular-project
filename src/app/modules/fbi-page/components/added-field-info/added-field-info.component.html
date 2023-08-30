@@ -1,7 +1,7 @@
 <div class="addedFieldInfo">
   <div class="info">
     <div class="key">{{fieldInfo.key}} : </div>
-    <div class="value">{{fieldInfo.value.value}}</div>
+    <div class="value" [ngStyle]="{'color': color}">{{fieldInfo.value.value}}</div>
   </div>
   <div class="buttons">
     <button mat-button [ngStyle]="{'background': '#ececec', 'margin-right': '10px'}" (click)="onDelete()"><mat-icon>delete</mat-icon></button>

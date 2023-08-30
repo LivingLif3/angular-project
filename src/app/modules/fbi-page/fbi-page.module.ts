@@ -26,6 +26,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { AddedFieldInfoComponent } from './components/added-field-info/added-field-info.component';
+import {TextHightlightDirective} from "../../../core/directives/text-hightlight.directive";
 
 const routes: Routes = [
   {
@@ -43,7 +44,8 @@ const routes: Routes = [
     ToggleButtonPipe,
     DefaultValuePipe,
     AddFieldComponent,
-    AddedFieldInfoComponent
+    AddedFieldInfoComponent,
+    TextHightlightDirective
   ],
   imports: [
     CommonModule,

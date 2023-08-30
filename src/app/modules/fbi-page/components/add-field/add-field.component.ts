@@ -34,9 +34,17 @@ export class AddFieldComponent {
   }
 
   changeInput(event: any) {
-    if(!this.getErrorStatus()) {
+    if (!this.getErrorStatus()) {
       this.validateError = this.getErrorStatus()
-      this.valueChange.emit(event.target.value)
+      if (event.checked !== undefined) {
+        this.valueChange.emit(event.checked)
+      } else {
+        if (this.type === "date") {
+          this.valueChange.emit(event.value)
+        } else {
+          this.valueChange.emit(event.target.value)
+        }
+      }
     } else {
       this.validateError = true
     }
@@ -47,9 +55,9 @@ export class AddFieldComponent {
   }
 
   getErrorStatus(): boolean {
-    if(this.type === typeof this.value) {
+    if (this.type === typeof this.value) {
       return false
-    } else if(this.type === 'date' && this.isValidDate(this.value)) {
+    } else if (this.type === 'date') { // && this.isValidDate(this.value)
       return false
     } else {
       return true
@@ -61,13 +69,13 @@ export class AddFieldComponent {
   }
 
   changeSelect() {
-    if(this.type === 'string') {
+    if (this.type === 'string') {
       this.value = ''
       this.typeChange.emit(this.type)
-    } else if(this.type === 'number') {
+    } else if (this.type === 'number') {
       this.value = 0
       this.typeChange.emit(this.type)
-    } else if(this.type === 'boolean') {
+    } else if (this.type === 'boolean') {
       this.value = false
       this.typeChange.emit(this.type)
     } else {
@@ -78,9 +86,9 @@ export class AddFieldComponent {
 
   addField() {
     this.fieldsService.addField({
-      name: this.name,
-      value: this.value
-    },
+        name: this.name,
+        value: this.value
+      },
       this.type)
     this.nameChange.emit("")
     this.valueChange.emit("")
