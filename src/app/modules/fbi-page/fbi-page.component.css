@@ -29,6 +29,7 @@
   overflow-y: auto;
   flex-wrap: wrap;
   margin-top: 20px;
+  width: 100%;
 }
 
 .paginator {

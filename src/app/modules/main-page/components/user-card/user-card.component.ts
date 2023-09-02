@@ -9,7 +9,7 @@ import {IUserData} from "../../../../../core/interfaces/user-interface";
 })
 export class UserCardComponent {
 
-  @Input() userData: IUserData | false = false
+  @Input() userData?: IUserData
 
 
 }

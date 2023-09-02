@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {UserAuthService} from "../../../../../core/services/user-auth.service";
+import {UserAuthService} from "../../../core/services/user-auth.service";
 import {finalize} from "rxjs";
-import {IUserData} from "../../../../../core/interfaces/user-interface";
+import {IUserData} from "../../../core/interfaces/user-interface";
 
 @Component({
   selector: 'app-main-page',
@@ -27,7 +27,7 @@ export class MainPageComponent implements OnInit{
         this.changeDetection.markForCheck()
       })
     ).subscribe(v => {
-      this.loadingData = v
+      this.loadingData = v //Сетить узер дату
     })
   }
 

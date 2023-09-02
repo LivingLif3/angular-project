@@ -19,7 +19,8 @@ export class FbiCardComponent {
   @Input() race!: string;
   @Input() description!: string;
 
-  @Input() updateChosenEditedElement!: Function
+  @Input() updateChosenEditedElement!: Function // Сделать через оутпут
+  
 
   @Input() chosenIndex!: number
   @Output() chosenIndexChange = new EventEmitter()

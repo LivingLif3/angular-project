@@ -1,14 +1,14 @@
 <div class="profileCard" *ngIf="userData">
   <div class="avatarWrapper">
-    <img [src]=[userData.img] class="avatar" />
+    <img [src]="userData.img" class="avatar" />
   </div>
   <mat-divider></mat-divider>
   <div class="content">
-    <div class="field"><span class="placeholder">email</span>: {{userData.email}}</div>
+    <div class="field"><span class="placeholder">email</span>: {{userData.email | defaultValue}}</div>
     <mat-divider></mat-divider>
-    <div class="field"><span class="placeholder">country</span>: {{userData.country}}</div>
+    <div class="field"><span class="placeholder">country</span>: {{userData.country | defaultValue}}</div>
     <mat-divider></mat-divider>
-    <div class="field"><span class="placeholder">description</span>: {{userData.description}}</div>
+    <div class="field"><span class="placeholder">description</span>: {{userData.description | defaultValue}}</div>
   </div>
 </div>
 

@@ -38,6 +38,7 @@
       [info]="!showEditedPosts ? criminals[chosenElement] : editedPosts[chosenEditedElement]"></app-criminal-info>
   </ng-container>
 </div>
+<!--total / items.perPage-->
 <div class="paginator">
   <mat-paginator [length]="!showEditedPosts ? criminals.length : editedPosts.length"
                  [pageSize]="itemsPerPage"

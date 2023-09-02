@@ -1,7 +1,8 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {FbiService} from "../../../../../core/services/fbi.service";
+import {FbiService} from "../../../core/services/fbi.service";
 import {FormBuilder} from "@angular/forms";
-import {AdditionalFieldsService} from "../../../../../core/services/additional-fields.service";
+import {AdditionalFieldsService} from "../../../core/services/additional-fields.service";
+import {DefaultValuePipe} from "../../../core/pipes/default-value/default-value.pipe";
 
 @Component({
   selector: 'app-fbi-page',
@@ -41,7 +42,7 @@ export class FbiPageComponent implements OnInit {
     type: "string"
   }
 
-  editFormGroup = this._formBuilder.group({
+  editFormGroup = this._formBuilder.group({ // camelCase
     title: [''],
     age_range: [''],
     sex: [''],
@@ -57,12 +58,12 @@ export class FbiPageComponent implements OnInit {
   constructor(
     private fbiService: FbiService,
     private changeDetectionRef: ChangeDetectorRef,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: FormBuilder, //убрать подчёркивание
     public fieldsService: AdditionalFieldsService
   ) {
   }
 
-  ngOnInit() {
+  ngOnInit() { // Сделать отдельную страницу с edited posts
     this.fbiService.getEditedPosts().subscribe((v) => {
       if(!v) {
         this.editedPosts = this.fbiService.editedPosts
@@ -79,7 +80,10 @@ export class FbiPageComponent implements OnInit {
     })
   }
 
-  onPaginateChange(event?: any) {
+  onPaginateChange(event?: any) { // Сделать метод принимающий номер страницы, getPosts
+    // getPosts(page: number){
+    // .....subscribe(() => this.posts = ....)
+    // }
     if (this.showEditedPosts) {
       this.editedPage = event.pageIndex
     } else {
@@ -135,10 +139,10 @@ export class FbiPageComponent implements OnInit {
     }
   }
 
-  async edit() {
+  edit() {
     console.log(this.editFormGroup)
     let data = {...this.criminals[this.chosenElement]}
-    for (let key in this.editFormGroup.controls) {
+    for (let key in this.editFormGroup.controls) { // Сделать через редьюсы
       if (this.editFormGroup.get(key)?.value) {
         data[key] = this.editFormGroup.get(key)?.value
       }

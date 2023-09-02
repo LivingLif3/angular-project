@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class DefaultValuePipe implements PipeTransform {
 
-  transform(value: string | null): string {
+  transform(value: string | null | undefined): string {
     return !value ? 'unknown' : value
   }
 

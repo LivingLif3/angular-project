@@ -7,7 +7,7 @@ import {AdditionalFieldsService} from "../../../../../core/services/additional-f
   styleUrls: ['./added-field-info.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddedFieldInfoComponent implements OnInit{
+export class AddedFieldInfoComponent {
 
   color: string = '#32CD32'
 
@@ -26,20 +26,6 @@ export class AddedFieldInfoComponent implements OnInit{
   constructor(
     public additionalService: AdditionalFieldsService
   ) {
-  }
-
-  ngOnInit() {
-    console.log(this.elementType, "INSIDE INIT!!!")
-    if(this.elementType.type === 'string' || this.elementType.type === 'date') {
-      this.color = '#32CD32'
-      console.log(this.color)
-    } else if(this.elementType.type === 'number') {
-      this.color = 'black'
-      console.log(this.color)
-    } else {
-      this.color = '#1E90FF'
-      console.log(this.color)
-    }
   }
 
   onDelete() {

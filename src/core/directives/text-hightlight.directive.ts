@@ -1,22 +1,30 @@
-import {Directive, ElementRef, HostBinding, Input, OnInit} from '@angular/core';
+import {Directive, ElementRef, HostBinding, Input, OnInit, Renderer2} from '@angular/core';
+import {types} from "../interfaces/color-types";
 
 @Directive({
   selector: '[appTextHightlight]'
 })
+
 export class TextHightlightDirective implements OnInit {
 
-  @Input() type!: string
+  colors: Record<types, string> = {
+    'string': '#32CD32',
+    'date': '#32CD32',
+    'number': '#000000',
+    'boolean': '#1E90FF'
+  }
 
-  constructor(private elementRef: ElementRef) {}
+  @Input() type!: types
+
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
 
   ngOnInit() {
-    if(this.type === 'string' || this.type === 'date') {
-      this.elementRef.nativeElement.style.color = '#32CD32'
-    } else if(this.type === 'number') {
-      this.elementRef.nativeElement.style.color = 'black'
-    } else {
-      this.elementRef.nativeElement.style.color = '#1E90FF'
-    }
+    console.log(this.type)
+    this.renderer.setStyle(
+      this.elementRef.nativeElement,
+      'color',
+      this.colors[this.type]
+    )
   }
 
   // @HostBinding('style.color') get typeFont() {

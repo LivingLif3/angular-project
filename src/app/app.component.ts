@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnChanges, OnInit} from '@angular/core';
-import {UserAuthService} from "../../../core/services/user-auth.service";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnChanges, OnDestroy, OnInit} from '@angular/core';
+import {UserAuthService} from "../core/services/user-auth.service";
 import {Router} from "@angular/router";
 
 @Component({
@@ -8,7 +8,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./app.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit, OnChanges {
+export class AppComponent implements OnInit, OnChanges, OnDestroy {
   isAuth: boolean = false
 
   loginForm: any = {
@@ -50,5 +50,7 @@ export class AppComponent implements OnInit, OnChanges {
     })
   }
 
-
+  ngOnDestroy() {
+    this.authService.isAuthStatus$.unsubscribe()
+  }
 }

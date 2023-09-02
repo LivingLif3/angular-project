@@ -23,7 +23,6 @@ export class UserAuthService {
     this.afAuth.authState.subscribe((user) => {
       if(user) {
         this.isAuth = true
-        console.log(this.isAuth)
         let userDataTemp: any = user.multiFactor
         this.userData = userDataTemp.user
         localStorage.setItem('user', JSON.stringify(this.userData))
