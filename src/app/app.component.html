@@ -1,7 +1,7 @@
 <app-header [isAuth]="isAuth"></app-header>
 <div class="contentWrapper">
   <app-sidebar></app-sidebar>
-  <ng-template [ngIf]="!authService.isAuth">
+  <ng-template [ngIf]="!isAuth">
     <div class="signInWrapper">
       <h2 class="label">Authorization</h2>
       <div class="inputContainer">

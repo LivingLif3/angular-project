@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, from, Observable} from "rxjs";
 import {addDoc, collection, collectionData, doc, Firestore, updateDoc} from "@angular/fire/firestore";
 
 @Injectable({
@@ -8,12 +8,16 @@ import {addDoc, collection, collectionData, doc, Firestore, updateDoc} from "@an
 })
 export class FbiService {
 
-  loadingPostsData: boolean = false
+  criminals: any = []
   editedPosts: any = []
 
   constructor(
     public http: HttpClient,
     public firestore: Firestore) { }
+
+  getPeople(): Observable<any> {
+    return this.http.get('https://api.fbi.gov/wanted/v1/list')
+  }
 
   getPeopleByPage(page: number): Observable<any> {
     return this.http.get('https://api.fbi.gov/wanted/v1/list', {
@@ -21,28 +25,15 @@ export class FbiService {
     })
   }
 
-  addEditedPost(post: any) {
+  addEditedPost(post: any): Observable<any> {
       const collectionInstance = collection(this.firestore, 'posts')
-      addDoc(collectionInstance, post).then(() => {
-        console.log('DATA ADD SUCCESSFULLY')
-      })
+      return from(addDoc(collectionInstance, {...post, edited: true}))
   }
 
-  getEditedPosts() {
-    console.log("HERE")
-    const progress$ = new BehaviorSubject<boolean>(this.loadingPostsData)
-    this.loadingPostsData = true
-    progress$.next(this.loadingPostsData)
+  getEditedPosts(): Observable<any> {
     const collectionInstance = collection(this.firestore, 'posts')
-    collectionData(collectionInstance).subscribe(v => {
-      this.editedPosts = v
-      console.log(this.editedPosts)
-      this.loadingPostsData = false
-      progress$.next(this.loadingPostsData)
-      progress$.complete()
-    })
 
-    return progress$
+    return collectionData(collectionInstance)
   }
 
   updateAddedFields(id: string, fields: any) {

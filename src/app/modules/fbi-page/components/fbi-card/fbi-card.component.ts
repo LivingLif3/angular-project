@@ -1,5 +1,15 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
 import {AdditionalFieldsService} from "../../../../../core/services/additional-fields.service";
+import {ChooseElementService} from "../../../../../core/services/choose-element.service";
+import {FbiService} from "../../../../../core/services/fbi.service";
 
 @Component({
   selector: 'app-fbi-card',
@@ -7,55 +17,41 @@ import {AdditionalFieldsService} from "../../../../../core/services/additional-f
   styleUrls: ['./fbi-card.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FbiCardComponent {
+export class FbiCardComponent implements OnInit {
 
-  @Input() id?: string
+  @Input() infoCard: any = {}
+
   @Input() editStatus?: boolean | undefined = false
   @Input() index!: number;
-  @Input() title!: string;
-  @Input() img!: string;
-  @Input() nationality: string = "unknown";
-  @Input() hair!: string;
-  @Input() race!: string;
-  @Input() description!: string;
-
-  @Input() updateChosenEditedElement!: Function // Сделать через оутпут
-  
-
-  @Input() chosenIndex!: number
-  @Output() chosenIndexChange = new EventEmitter()
 
   @Input() edit!: boolean
-  @Output() editChange = new EventEmitter()
-
-  @Input() chosenEditedElementId?: string
-  @Output() chosenEditedElementIdChange = new EventEmitter()
-
-  @Input() showEditedPosts?: boolean
-  @Output() showEditedPostsChange = new EventEmitter()
+  // New fields after refactoring
+  @Output() chooseIndex = new EventEmitter<number>()
+  @Output() clickEdit = new EventEmitter()
 
   constructor(
-    private additionalService: AdditionalFieldsService
+    private additionalService: AdditionalFieldsService,
+    private fbiService: FbiService,
+    private ref: ChangeDetectorRef
   ) {
   }
 
-  choose() {
-    this.chosenIndexChange.emit(this.index)
-    if(this.id && this.editStatus) {
-      this.chosenEditedElementIdChange.emit(this.id)
+  ngOnInit() {
+    if (!this.edit) {
+      let index = this.fbiService.editedPosts.findIndex((criminal: any) => criminal['@id'] === this.infoCard['@id'])
+      if (index !== -1) {
+        this.editStatus = true
+        this.ref.markForCheck()
+      }
     }
   }
 
-  changePage() {
-    if(this.editStatus) {
-      this.choose()
-      this.updateChosenEditedElement()
-      this.showEditedPostsChange.emit(true)
-    }
+  choose() {
+    this.chooseIndex.emit(this.index)
   }
 
   onEdit() {
     this.additionalService.clearFields()
-    this.editChange.emit(true)
+    this.clickEdit.emit()
   }
 }

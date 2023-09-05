@@ -11,24 +11,33 @@ import {IUserData} from "../../../core/interfaces/user-interface";
 })
 export class MainPageComponent implements OnInit{
 
-  loadingData: boolean = false
-  userData!: IUserData
+  loading: boolean = false
+  userData!: any
 
   constructor(
     public authService: UserAuthService,
-    private changeDetection: ChangeDetectorRef
+    private ref: ChangeDetectorRef
   ) {
   }
 
   ngOnInit() {
-    this.authService.getUserRenderData().pipe(
-      finalize(() => {
-        this.userData = this.authService.renderUserData
-        this.changeDetection.markForCheck()
+    this.loading = true
+    this.authService.getAuthUser().subscribe((user: any) => {
+      let userInfo = user.multiFactor.user
+      this.authService.getUserRenderData().subscribe(users => {
+        this.userData = users.find(user => user['email'] === userInfo.email)
+        this.loading = false
+        this.ref.markForCheck()
       })
-    ).subscribe(v => {
-      this.loadingData = v //Сетить узер дату
     })
+    // this.authService.getUserRenderData().pipe(
+    //   finalize(() => {
+    //     this.userData = this.authService.renderUserData
+    //     this.changeDetection.markForCheck()
+    //   })
+    // ).subscribe(v => {
+    // })
+
   }
 
 }

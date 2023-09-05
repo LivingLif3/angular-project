@@ -1,4 +1,13 @@
-import {ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,7 +18,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./modal.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ModalComponent {
+export class ModalComponent implements OnChanges {
 
   @Input() isOpen: boolean = false
 
@@ -17,8 +26,13 @@ export class ModalComponent {
 
   @Output() isOpenChange = new EventEmitter()
 
+  ngOnChanges() {
+    console.log(this.isOpen, "CHANGES MODAL")
+  }
+
   setIsOpen(): void {
     this.isOpenChange.emit(!this.isOpen)
+    console.log(this.isOpen, "MODAL")
   }
 
   onContentClick(event: any): void {

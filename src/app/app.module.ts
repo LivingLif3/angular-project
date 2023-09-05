@@ -1,11 +1,11 @@
-import {NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './components/header-component/header.component';
 import {CommonModule} from "@angular/common";
 import {SidebarComponent} from './components/sidebar/sidebar.component';
-import { RouterModule, RouterOutlet, Routes} from "@angular/router";
+import {Router, RouterModule, RouterOutlet, Routes} from "@angular/router";
 import {ModalComponent} from "../core/components/modal/modal.component";
 import {FormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -19,6 +19,7 @@ import {authGuard} from "../core/guards/auth.guard";
 import {getFirestore, provideFirestore} from "@angular/fire/firestore";
 import {MatIconModule} from '@angular/material/icon';
 import {HttpClientModule} from "@angular/common/http";
+import {UserAuthService} from "../core/services/user-auth.service";
 
 let routes: Routes = [
   {
@@ -34,6 +35,22 @@ let routes: Routes = [
     canLoad: [authGuard]
   }
 ]
+
+function initializeApplication(authService: UserAuthService, router: Router) {
+    return () => authService.checkAuth().subscribe((user) => {
+      if(user) {
+        let userDataTemp: any = user.multiFactor.user
+        localStorage.setItem('user', JSON.stringify(userDataTemp))
+        JSON.parse(localStorage.getItem('user')!)
+        authService.userData$.next(userDataTemp)
+        router.navigate(['/fbi'])
+      } else {
+        localStorage.removeItem('user')
+        JSON.parse(localStorage.getItem('user')!)
+        authService.userData$.next(null)
+      }
+    })
+}
 
 @NgModule({
   declarations: [
@@ -58,7 +75,13 @@ let routes: Routes = [
     HttpClientModule
   ],
   providers: [
-    { provide: FIREBASE_OPTIONS, useValue: environment.firebase } // НУЖНО ПРОВАЙДИТЬ ТОКЕН, Т.К. ВЫКИДЫВАЕТ ОШИБКУ БЕЗ ЭТОГО
+    { provide: FIREBASE_OPTIONS, useValue: environment.firebase }, // НУЖНО ПРОВАЙДИТЬ ТОКЕН, Т.К. ВЫКИДЫВАЕТ ОШИБКУ БЕЗ ЭТОГО
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApplication,
+      deps: [UserAuthService, Router],
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

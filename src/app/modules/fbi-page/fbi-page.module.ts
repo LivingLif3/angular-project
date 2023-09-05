@@ -27,11 +27,25 @@ import { AddedFieldInfoComponent } from './components/added-field-info/added-fie
 import {TextHightlightDirective} from "../../../core/directives/text-hightlight.directive";
 import {DefaultValueModule} from "../../../core/pipes/default-value/default-value.module";
 import {ToggleButtonModule} from "../../../core/pipes/toggle-button/toggle-button.module";
+import { CriminalsContainerComponent } from './components/criminals-container/criminals-container.component';
+import { EditedPostPageComponent } from './components/edited-post-page/edited-post-page.component';
+import { OriginalPostsPageComponent } from './components/original-posts-page/original-posts-page.component';
+import { EditPostModalComponent } from './components/edit-post-modal/edit-post-modal.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: FbiPageComponent,
+    redirectTo: 'original',
+    pathMatch: 'full'
+  },
+  {
+    path: 'edited',
+    component: EditedPostPageComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'original',
+    component: OriginalPostsPageComponent,
     canActivate: [authGuard]
   }
 ]
@@ -43,7 +57,11 @@ const routes: Routes = [
     CriminalInfoComponent,
     AddFieldComponent,
     AddedFieldInfoComponent,
-    TextHightlightDirective
+    TextHightlightDirective,
+    CriminalsContainerComponent,
+    EditedPostPageComponent,
+    OriginalPostsPageComponent,
+    EditPostModalComponent
   ],
   imports: [
     CommonModule,

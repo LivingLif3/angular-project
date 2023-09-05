@@ -1,6 +1,6 @@
 .wrapper {
   max-width: 300px;
-  height: calc(100vh - 50px - 140px);
+  height: calc(100vh - 50px - 170px);
   overflow-y: auto;
   overflow-x: hidden;
 }

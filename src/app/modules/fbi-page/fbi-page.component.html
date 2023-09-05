@@ -1,34 +1,36 @@
 <div class="wrapper">
   <span class="link"
-        (click)="changePosts()">{{showEditedPosts | toggleButton : 'original posts' : 'edited posts'}}</span>
+        (click)="changePosts()">{{showEditedPosts | toggleButton : 'original posts' : 'edited posts'}}
+    </span>
   <div class="criminalsWrapper">
+
     <ng-template [ngIf]="loading">
       <mat-spinner></mat-spinner>
     </ng-template>
+
     <div class="header">
       <button class="button" (click)="showInfo()">Show</button>
       <button class="button" (click)="hideInfo()">Hide</button>
     </div>
+    <router-outlet></router-outlet>
     <div class="criminals" *ngIf="!loading">
       <ng-container *ngIf="!showEditedPosts; else editedPostsRef">
-        <ng-container *ngFor="let criminal of sliceOfCriminals; let i = index">
-          <app-fbi-card
-            [id]="criminal['@id']"
-            [updateChosenEditedElement]="updateChosenEditedElement.bind(this)"
-            [(showEditedPosts)]="showEditedPosts"
-            [(chosenEditedElementId)]="chosenEditedElementId"
-            [index]="i + page*itemsPerPage"
-            [editStatus]="criminal.edit"
-            [(edit)]="showModal"
-            [(chosenIndex)]="chosenElement"
-            [title]="criminal.title"
-            [img]="criminal.images[0].original"
-            [nationality]="criminal.nationality"
-            [hair]="criminal.hair"
-            [race]="criminal.race"
-            [description]="criminal.description"
-          ></app-fbi-card>
-        </ng-container>
+<!--        <ng-container *ngFor="let criminal of sliceOfCriminals; let i = index">-->
+<!--          <app-fbi-card-->
+<!--            [id]="criminal['@id']"-->
+<!--            [(showEditedPosts)]="showEditedPosts"-->
+<!--            [(chosenEditedElementId)]="chosenEditedElementId"-->
+<!--            [index]="i + page*itemsPerPage"-->
+<!--            [editStatus]="criminal.edited"-->
+<!--            [(chosenIndex)]="chosenElement"-->
+<!--            [title]="criminal.title"-->
+<!--            [img]="criminal.images[0].original"-->
+<!--            [nationality]="criminal.nationality"-->
+<!--            [hair]="criminal.hair"-->
+<!--            [race]="criminal.race"-->
+<!--            [description]="criminal.description"-->
+<!--          ></app-fbi-card>-->
+<!--        </ng-container>-->
       </ng-container>
 
     </div>
@@ -55,13 +57,6 @@
     <app-fbi-card
       [id]="criminal['@id']"
       [index]="i + editedPage*itemsPerPage"
-      [(chosenIndex)]="chosenEditedElement"
-      [title]="criminal.title"
-      [img]="criminal.images[0].original"
-      [nationality]="criminal.nationality"
-      [hair]="criminal.hair"
-      [race]="criminal.race"
-      [description]="criminal.description"
     ></app-fbi-card>
   </ng-container>
 </ng-template>

@@ -24,25 +24,34 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    this.authService.isAuthStatus$.subscribe(value => {
-      if(value) {
-        this.router.navigate(['/fbi'])
-      } else {
-        this.ref.markForCheck()
-      }
-    })
+    if (localStorage.getItem('user')) {
+      console.log('here')
+      this.isAuth = true
+      this.router.navigate(['/fbi'])
+    } else {
+      this.isAuth = false
+      this.ref.markForCheck()
+    }
+
+    // this.authService.isAuthStatus$.subscribe(value => {
+    //   if(value) {
+    //     this.router.navigate(['/fbi'])
+    //   } else {
+    //     this.ref.markForCheck()
+    //   }
+    // })
   }
 
   ngOnChanges() {
-    if(this.authService.isAuth) {
+    if (this.authService.isAuth) {
       this.router.navigate(['/fbi'])
     }
   }
 
   signIn() {
     this.authService.signIn(this.loginForm.email, this.loginForm.password).then(user => {
-      if(user) {
-        if(this.authService.isAuth) {
+      if (user) {
+        if (this.authService.isAuth) {
           this.isAuth = true
         }
         this.ref.markForCheck()
@@ -51,6 +60,6 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.authService.isAuthStatus$.unsubscribe()
+    // this.authService.isAuthStatus$.unsubscribe()
   }
 }

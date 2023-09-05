@@ -14,9 +14,10 @@ export class FbiPageComponent implements OnInit {
 
   filtredAgeValue: string = ''
 
+  showEditedPosts: boolean = false
+
   showModal: boolean = false
 
-  showEditedPosts: boolean = false
   editedPosts: any = []
 
   chosenElement: number = 0
@@ -65,6 +66,7 @@ export class FbiPageComponent implements OnInit {
 
   ngOnInit() { // Сделать отдельную страницу с edited posts
     this.fbiService.getEditedPosts().subscribe((v) => {
+      console.log(v, "EDITED POSTS")
       if(!v) {
         this.editedPosts = this.fbiService.editedPosts
         this.updateEditStatus()
@@ -112,20 +114,20 @@ export class FbiPageComponent implements OnInit {
   }
 
   changePosts() {
+    this.loading = true
     this.showEditedPosts = !this.showEditedPosts
     if (this.showEditedPosts) {
-      this.fbiService.getEditedPosts().subscribe(v => {
-        if (!v) {
-          this.editedPosts = this.fbiService.editedPosts
-          this.sliceOfCriminals = this.editedPosts.slice(this.editedPage * this.itemsPerPage, (this.editedPage + 1) * this.itemsPerPage)
-          this.updateChosenEditedElement()
-          this.changeDetectionRef.markForCheck()
-        }
-        this.loading = v
+      this.fbiService.getEditedPosts().subscribe(editedPosts => {
+        this.editedPosts = editedPosts
+        this.sliceOfCriminals = this.editedPosts.slice(this.editedPage * this.itemsPerPage, (this.editedPage + 1) * this.itemsPerPage)
+        this.updateChosenEditedElement()
+        this.loading = false
+        this.changeDetectionRef.markForCheck()
       })
     } else {
       this.sliceOfCriminals = this.criminals.slice(this.page * this.itemsPerPage, (this.page + 1) * this.itemsPerPage)
       this.updateEditStatus()
+      this.loading = false
       this.changeDetectionRef.markForCheck()
     }
   }

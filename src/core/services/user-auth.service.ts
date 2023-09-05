@@ -1,7 +1,7 @@
-import {Injectable, Optional} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {collection, collectionData, Firestore} from "@angular/fire/firestore";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, from, Observable} from "rxjs";
 import {Router} from "@angular/router";
 
 @Injectable({
@@ -13,31 +13,13 @@ export class UserAuthService {
   isAuth: boolean = false
   error: any
   loadingUserData: boolean = false
-  isAuthStatus$ = new BehaviorSubject<boolean>(this.isAuth)
+  userData$ = new BehaviorSubject<any>({})
 
   constructor(
     public afAuth: AngularFireAuth,
     public firestore: Firestore,
     private router: Router
-  ) {
-    this.afAuth.authState.subscribe((user) => {
-      if(user) {
-        this.isAuth = true
-        let userDataTemp: any = user.multiFactor
-        this.userData = userDataTemp.user
-        localStorage.setItem('user', JSON.stringify(this.userData))
-        JSON.parse(localStorage.getItem('user')!)
-        this.isAuthStatus$.next(this.isAuth)
-        this.router.navigate(['/fbi'])
-      } else {
-        this.isAuth = false
-        this.userData = null
-        localStorage.removeItem('user')
-        JSON.parse(localStorage.getItem('user')!)
-        this.isAuthStatus$.next(this.isAuth)
-      }
-    })
-  }
+  ) {}
 
   signIn(email: string, password: string) {
     return this.afAuth
@@ -49,7 +31,6 @@ export class UserAuthService {
           this.userData = userDataTemp.user
           console.log(this.userData, 'sign in')
           localStorage.setItem('user', JSON.stringify(this.userData))
-          this.isAuthStatus$.next(this.isAuth)
           this.router.navigate(['/fbi'])
           return this.userData
         }
@@ -58,7 +39,6 @@ export class UserAuthService {
         this.isAuth = false
         this.userData = null
         localStorage.removeItem('user')
-        this.isAuthStatus$.next(this.isAuth)
         return null
       })
   }
@@ -68,23 +48,21 @@ export class UserAuthService {
       this.isAuth = false
       this.userData = null
       localStorage.removeItem('user')
-      this.isAuthStatus$.next(this.isAuth)
     })
   }
 
-  getUserRenderData() {
-    const progress$ = new BehaviorSubject<boolean>(this.loadingUserData)
-    this.loadingUserData = true
-    progress$.next(this.loadingUserData)
-    const collectionInstance = collection(this.firestore, 'users')
-    collectionData(collectionInstance).subscribe(v => {
-      this.renderUserData = v.find(user => user['email'] === this.userData.email)
-      this.loadingUserData = false
-      progress$.next(this.loadingUserData)
-      progress$.complete()
-    })
+  checkAuth(): Observable<any> {
+    return this.afAuth.authState
+  }
 
-    return progress$
+  getAuthUser() {
+    return from(this.afAuth.currentUser)
+  }
+
+  getUserRenderData() {
+    const collectionInstance = collection(this.firestore, 'users')
+
+    return collectionData(collectionInstance)
   }
 
   // setUserData(user: any) {
