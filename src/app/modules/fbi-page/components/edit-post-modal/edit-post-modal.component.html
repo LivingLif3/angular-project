@@ -1,137 +1,130 @@
-<mat-stepper orientation="vertical" [linear]="false" #stepper>
-  <form [formGroup]="editFormGroup">
+<div class="wrapper">
+  <mat-stepper orientation="vertical" [linear]="false" #stepper>
+    <form [formGroup]="editFormGroup">
+      <mat-step>
+        <ng-template matStepLabel>Fill out title</ng-template>
+        <mat-form-field>
+          <mat-label>Title</mat-label>
+          <input matInput placeholder="Last name, First name" formControlName="title" required>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Fill out age</ng-template>
+        <mat-form-field>
+          <mat-label>Age</mat-label>
+          <input matInput
+                 (input)="filterNumericInput($event)" placeholder="Last name, First name" formControlName="age_range"
+                 required>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Fill out gender</ng-template>
+        <app-gender formControlName="sex"></app-gender>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Fill out weight</ng-template>
+        <mat-form-field>
+          <mat-label>Weight</mat-label>
+          <input matInput placeholder="Last name, First name" formControlName="weight" required>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Fill out race</ng-template>
+        <mat-form-field>
+          <mat-label>Race</mat-label>
+          <input matInput placeholder="Last name, First name" formControlName="race_raw" required>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Fill out nationality</ng-template>
+        <mat-form-field>
+          <mat-label>Nationality</mat-label>
+          <input matInput placeholder="Last name, First name" formControlName="nationality" required>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Fill out hair</ng-template>
+        <mat-form-field>
+          <mat-label>Hair</mat-label>
+          <input matInput placeholder="Last name, First name" formControlName="hair_raw" required>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Fill out eyes</ng-template>
+        <mat-form-field>
+          <mat-label>Eyes</mat-label>
+          <input matInput placeholder="Last name, First name" formControlName="eyes" required>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Fill out reward</ng-template>
+        <mat-form-field>
+          <mat-label>Reward</mat-label>
+          <input matInput placeholder="Last name, First name" formControlName="reward_text" required>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Fill out description</ng-template>
+        <mat-form-field>
+          <mat-label>Description</mat-label>
+          <input matInput placeholder="Last name, First name" formControlName="description" required>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+    </form>
     <mat-step>
-      <ng-template matStepLabel>Fill out title</ng-template>
-      <mat-form-field>
-        <mat-label>Title</mat-label>
-        <input matInput placeholder="Last name, First name" formControlName="title" required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperNext>Next</button>
-      </div>
+      <ng-template matStepLabel>Create new fields</ng-template>
+      <ng-container *ngFor="let element of fieldsService.additionalFields | keyvalue">
+        <app-added-field-info [fieldInfo]="element"
+                              [elementType]="element.value"
+                              [(name)]="additionalFieldInfo.key"
+                              [(value)]="additionalFieldInfo.value"
+                              [(type)]="additionalFieldInfo.type"
+        ></app-added-field-info>
+      </ng-container>
+      <app-add-field
+        [(name)]="additionalFieldInfo.key"
+        [(value)]="additionalFieldInfo.value"
+        [(type)]="additionalFieldInfo.type"
+      ></app-add-field>
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel>Fill out age</ng-template>
-      <mat-form-field>
-        <mat-label>Age</mat-label>
-        <input matInput
-               (input)="filterNumericInput($event)" placeholder="Last name, First name" formControlName="age_range"
-               required>
-      </mat-form-field>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done.</p>
       <div>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+        <button mat-button (click)="edit()">Save</button>
       </div>
     </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Fill out gender</ng-template>
-      <app-gender formControlName="sex"></app-gender>
-      <div>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Fill out weight</ng-template>
-      <mat-form-field>
-        <mat-label>Weight</mat-label>
-        <input matInput placeholder="Last name, First name" formControlName="weight" required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Fill out race</ng-template>
-      <mat-form-field>
-        <mat-label>Race</mat-label>
-        <input matInput placeholder="Last name, First name" formControlName="race_raw" required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Fill out nationality</ng-template>
-      <mat-form-field>
-        <mat-label>Nationality</mat-label>
-        <input matInput placeholder="Last name, First name" formControlName="nationality" required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Fill out hair</ng-template>
-      <mat-form-field>
-        <mat-label>Hair</mat-label>
-        <input matInput placeholder="Last name, First name" formControlName="hair_raw" required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Fill out eyes</ng-template>
-      <mat-form-field>
-        <mat-label>Eyes</mat-label>
-        <input matInput placeholder="Last name, First name" formControlName="eyes" required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Fill out reward</ng-template>
-      <mat-form-field>
-        <mat-label>Reward</mat-label>
-        <input matInput placeholder="Last name, First name" formControlName="reward_text" required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Fill out description</ng-template>
-      <mat-form-field>
-        <mat-label>Description</mat-label>
-        <input matInput placeholder="Last name, First name" formControlName="description" required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </mat-step>
-  </form>
-  <mat-step>
-    <ng-template matStepLabel>Create new fields</ng-template>
-    <!--      <div class="addFieldButtonWrapper">-->
-    <!--        <button class="addFieldButton" mat-button>-->
-    <!--          <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 448 512">-->
-    <!--            &lt;!&ndash;! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. &ndash;&gt;-->
-    <!--            <path-->
-    <!--              d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>-->
-    <!--          </svg>-->
-    <!--        </button>-->
-    <!--      </div>-->
-    <ng-container *ngFor="let element of fieldsService.additionalFields | keyvalue">
-      <app-added-field-info [fieldInfo]="element"
-                            [elementType]="element.value"
-                            [(name)]="additionalFieldInfo.key"
-                            [(value)]="additionalFieldInfo.value"
-                            [(type)]="additionalFieldInfo.type"
-      ></app-added-field-info>
-    </ng-container>
-    <app-add-field
-      [(name)]="additionalFieldInfo.key"
-      [(value)]="additionalFieldInfo.value"
-      [(type)]="additionalFieldInfo.type"
-    ></app-add-field>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    <p>You are now done.</p>
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
-      <button mat-button (click)="onClick()">Save</button>
-    </div>
-  </mat-step>
-</mat-stepper>
+  </mat-stepper>
+</div>

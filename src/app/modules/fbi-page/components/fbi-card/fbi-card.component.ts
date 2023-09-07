@@ -8,8 +8,8 @@ import {
   Output
 } from '@angular/core';
 import {AdditionalFieldsService} from "../../../../../core/services/additional-fields.service";
-import {ChooseElementService} from "../../../../../core/services/choose-element.service";
 import {FbiService} from "../../../../../core/services/fbi.service";
+import {ModalService} from "../../../../../core/services/modal.service";
 
 @Component({
   selector: 'app-fbi-card',
@@ -20,19 +20,21 @@ import {FbiService} from "../../../../../core/services/fbi.service";
 export class FbiCardComponent implements OnInit {
 
   @Input() infoCard: any = {}
+  @Output() infoCardChange = new EventEmitter()
 
   @Input() editStatus?: boolean | undefined = false
   @Input() index!: number;
 
   @Input() edit!: boolean
   // New fields after refactoring
-  @Output() chooseIndex = new EventEmitter<number>()
   @Output() clickEdit = new EventEmitter()
+  @Output() onChoose = new EventEmitter()
 
   constructor(
     private additionalService: AdditionalFieldsService,
     private fbiService: FbiService,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private modalService: ModalService
   ) {
   }
 
@@ -47,11 +49,11 @@ export class FbiCardComponent implements OnInit {
   }
 
   choose() {
-    this.chooseIndex.emit(this.index)
+    this.infoCardChange.emit(this.infoCard)
+    this.onChoose.emit()
   }
 
   onEdit() {
-    this.additionalService.clearFields()
-    this.clickEdit.emit()
+    this.modalService.openEditModal()
   }
 }

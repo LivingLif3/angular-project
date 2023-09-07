@@ -14,7 +14,9 @@ export class EditedPostPageComponent implements OnInit {
   editedPosts: any = []
   showAdditionalInfo: boolean = false
 
-  chosenEditedElement: number = 0 // Temporary field, make service
+  // Additional info fields
+
+  editedCriminal: any = {}
 
   // Paginator
 
@@ -33,7 +35,6 @@ export class EditedPostPageComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true
-    this.chosenEditedElement = this.chooseElementService.chosenEditedElement
     this.fbiService.getEditedPosts().subscribe((editedPosts) => {
       this.editedPosts = editedPosts
       this.fbiService.editedPosts = this.editedPosts
@@ -42,6 +43,10 @@ export class EditedPostPageComponent implements OnInit {
 
       this.loading = false
       this.ref.markForCheck()
+    })
+
+    this.chooseElementService.editedCriminalData$.subscribe(editedCriminal => {
+      this.editedCriminal = editedCriminal
     })
   }
 
@@ -53,8 +58,11 @@ export class EditedPostPageComponent implements OnInit {
     this.showAdditionalInfo = false
   }
 
-  chooseElement(elementIndex: number) {
-    this.chosenEditedElement = this.chooseElementService.chooseEditedElement(elementIndex, this.pageIndex, this.itemsPerPage)
+  // Additional info
+
+  choose() {
+    this.chooseElementService.chooseElement(this.editedCriminal)
+    this.ref.markForCheck()
   }
 
   // Paginator methods

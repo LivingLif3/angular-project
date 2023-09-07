@@ -17,17 +17,16 @@
         <app-fbi-card
           [infoCard]="criminal"
           [index]="i"
-          (chooseIndex)="chooseElement($event)"
           [edit]="true"
+          (infoCardChange)="editedCriminal=criminal"
+          (onChoose)="choose()"
         ></app-fbi-card>
       </ng-container>
-      <!--      [index]="i + editedPage*itemsPerPage"-->
-      <!--      [(chosenIndex)]="chosenEditedElement"-->
     </div>
   </div>
   <ng-container *ngIf="showAdditionalInfo">
     <app-criminal-info
-      [info]="editedPosts[chosenEditedElement]"></app-criminal-info>
+      [info]="editedCriminal"></app-criminal-info>
   </ng-container>
 </div>
 <!--total / items.perPage-->
@@ -39,19 +38,3 @@
                  #paginator>
   </mat-paginator>
 </div>
-
-<!--<ng-template #editedPostsRef>-->
-<!--  <ng-container *ngFor="let criminal of editedPosts; let i = index">-->
-<!--    <app-fbi-card-->
-<!--      [id]="criminal['@id']"-->
-<!--      [index]="i + editedPage*itemsPerPage"-->
-<!--      [(chosenIndex)]="chosenEditedElement"-->
-<!--      [title]="criminal.title"-->
-<!--      [img]="criminal.images[0].original"-->
-<!--      [nationality]="criminal.nationality"-->
-<!--      [hair]="criminal.hair"-->
-<!--      [race]="criminal.race"-->
-<!--      [description]="criminal.description"-->
-<!--    ></app-fbi-card>-->
-<!--  </ng-container>-->
-<!--</ng-template>-->

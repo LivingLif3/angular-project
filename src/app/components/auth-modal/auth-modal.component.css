@@ -1,0 +1,19 @@
+.authModal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 400px;
+  height: 280px
+}
+
+.buttonContainer {
+  width: auto;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.label {
+  margin-bottom: 20px;
+  text-align: center;
+}

@@ -16,22 +16,21 @@
       <ng-container *ngFor="let criminal of showedCriminals; let i = index">
         <app-fbi-card
           [infoCard]="criminal"
+          (infoCardChange)="chosenCriminal=criminal"
           [index]="i"
-          (chooseIndex)="chooseElement($event)"
           (clickEdit)="open()"
           [edit]="false"
+          (onChoose)="choose()"
         ></app-fbi-card>
       </ng-container>
-      <!--      [index]="i + editedPage*itemsPerPage"-->
-      <!--      [(chosenIndex)]="chosenEditedElement"-->
     </div>
   </div>
   <ng-container *ngIf="showAdditionalInfo">
     <app-criminal-info
-      [info]="criminals[chosenElement]"></app-criminal-info>
+      [info]="chosenCriminal"
+    ></app-criminal-info>
   </ng-container>
 </div>
-<!--total / items.perPage-->
 <div class="paginator">
   <mat-paginator [length]="length"
                  [pageSize]="itemsPerPage"
@@ -40,25 +39,4 @@
                  #paginator>
   </mat-paginator>
 </div>
-<app-modal [(isOpen)]="isOpen" [color]="'white'">
-  <app-edit-post-modal
-    (editClickChange)="edit()"
-    [editFormGroup]="editFormGroup"
-  >
-  </app-edit-post-modal>
-</app-modal>
-<!--<ng-template #editedPostsRef>-->
-<!--  <ng-container *ngFor="let criminal of editedPosts; let i = index">-->
-<!--    <app-fbi-card-->
-<!--      [id]="criminal['@id']"-->
-<!--      [index]="i + editedPage*itemsPerPage"-->
-<!--      [(chosenIndex)]="chosenEditedElement"-->
-<!--      [title]="criminal.title"-->
-<!--      [img]="criminal.images[0].original"-->
-<!--      [nationality]="criminal.nationality"-->
-<!--      [hair]="criminal.hair"-->
-<!--      [race]="criminal.race"-->
-<!--      [description]="criminal.description"-->
-<!--    ></app-fbi-card>-->
-<!--  </ng-container>-->
-<!--</ng-template>-->
+

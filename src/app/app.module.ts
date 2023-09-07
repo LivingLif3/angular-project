@@ -7,12 +7,12 @@ import {CommonModule} from "@angular/common";
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {Router, RouterModule, RouterOutlet, Routes} from "@angular/router";
 import {ModalComponent} from "../core/components/modal/modal.component";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
-import { environment } from '../environments/environment';
+import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
+import {environment} from '../environments/environment';
 import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import {FIREBASE_OPTIONS} from "@angular/fire/compat";
 import {authGuard} from "../core/guards/auth.guard";
@@ -20,6 +20,12 @@ import {getFirestore, provideFirestore} from "@angular/fire/firestore";
 import {MatIconModule} from '@angular/material/icon';
 import {HttpClientModule} from "@angular/common/http";
 import {UserAuthService} from "../core/services/user-auth.service";
+import {AuthModalComponent} from './components/auth-modal/auth-modal.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {FbiService} from "../core/services/fbi.service";
+import {mergeMap, tap} from "rxjs";
+import {ChooseElementService} from "../core/services/choose-element.service";
+import {MatSelectModule} from "@angular/material/select";
 
 let routes: Routes = [
   {
@@ -36,9 +42,11 @@ let routes: Routes = [
   }
 ]
 
-function initializeApplication(authService: UserAuthService, router: Router) {
-    return () => authService.checkAuth().subscribe((user) => {
-      if(user) {
+function initializeApplication(authService: UserAuthService, fbiService: FbiService, chooseElementService: ChooseElementService, router: Router) {
+  return () => authService.checkAuth().pipe(
+    mergeMap((user) => {
+      console.log(user, "MULTIFACTOR")
+      if (user.multiFactor.user) {
         let userDataTemp: any = user.multiFactor.user
         localStorage.setItem('user', JSON.stringify(userDataTemp))
         JSON.parse(localStorage.getItem('user')!)
@@ -49,14 +57,21 @@ function initializeApplication(authService: UserAuthService, router: Router) {
         JSON.parse(localStorage.getItem('user')!)
         authService.userData$.next(null)
       }
-    })
+
+      return fbiService.getPeople()
+    }),
+    tap(criminals => fbiService.criminals = criminals)
+  ).subscribe((criminals) => {
+    chooseElementService.chooseElement(criminals.items[0])
+  })
 }
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    AuthModalComponent
   ],
   imports: [
     BrowserModule,
@@ -72,14 +87,17 @@ function initializeApplication(authService: UserAuthService, router: Router) {
     AngularFireAuthModule,
     RouterModule.forRoot(routes),
     MatIconModule,
-    HttpClientModule
+    HttpClientModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatSelectModule
   ],
   providers: [
-    { provide: FIREBASE_OPTIONS, useValue: environment.firebase }, // НУЖНО ПРОВАЙДИТЬ ТОКЕН, Т.К. ВЫКИДЫВАЕТ ОШИБКУ БЕЗ ЭТОГО
+    {provide: FIREBASE_OPTIONS, useValue: environment.firebase}, // НУЖНО ПРОВАЙДИТЬ ТОКЕН, Т.К. ВЫКИДЫВАЕТ ОШИБКУ БЕЗ ЭТОГО
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApplication,
-      deps: [UserAuthService, Router],
+      deps: [UserAuthService, FbiService, ChooseElementService, Router],
       multi: true
     }
   ],

@@ -1,6 +1,9 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
-import {FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {AdditionalFieldsService} from "../../../../../core/services/additional-fields.service";
+import {ChooseElementService} from "../../../../../core/services/choose-element.service";
+import {FbiService} from "../../../../../core/services/fbi.service";
+import {ModalService} from "../../../../../core/services/modal.service";
 
 @Component({
   selector: 'app-edit-post-modal',
@@ -10,18 +13,31 @@ import {AdditionalFieldsService} from "../../../../../core/services/additional-f
 })
 export class EditPostModalComponent {
 
-  @Input() editFormGroup!: FormGroup
-
-  @Output() editClickChange = new EventEmitter()
-
   additionalFieldInfo = {
     key: "",
     value: "",
     type: "string"
   }
 
+  editFormGroup: FormGroup = this.fb.group({ // camelCase
+    title: [''],
+    age_range: [''],
+    sex: [''],
+    weight: [''],
+    race_raw: [''],
+    nationality: [''],
+    hair_raw: [''],
+    eyes: [''],
+    reward_text: [''],
+    description: ['']
+  })
+
   constructor(
-    public fieldsService: AdditionalFieldsService
+    public fieldsService: AdditionalFieldsService,
+    private fb: FormBuilder,
+    private chooseElementService: ChooseElementService,
+    private fbiService: FbiService,
+    private modalService: ModalService
   ) {
   }
   // Нужно здесь заэмитить значение на false
@@ -30,7 +46,20 @@ export class EditPostModalComponent {
     this.editFormGroup.get('age_range')!.setValue(filteredValue, { emitEvent: false });
   }
 
-  onClick() {
-    this.editClickChange.emit()
+  edit() {
+    let data = {...this.chooseElementService.criminal}
+
+    for (let key in this.editFormGroup.controls) {
+      if (this.editFormGroup.get(key)?.value) {
+        data[key] = this.editFormGroup.get(key)?.value
+      }
+    }
+    if(Object.keys(this.fieldsService.additionalFields).length) {
+      data.added_fields = this.fieldsService.additionalFields
+    } else {
+      data.added_fields = null
+    }
+    this.fbiService.addEditedPost(data)
+    this.modalService.closeEditModal()
   }
 }

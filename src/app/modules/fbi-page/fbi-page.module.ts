@@ -31,6 +31,7 @@ import { CriminalsContainerComponent } from './components/criminals-container/cr
 import { EditedPostPageComponent } from './components/edited-post-page/edited-post-page.component';
 import { OriginalPostsPageComponent } from './components/original-posts-page/original-posts-page.component';
 import { EditPostModalComponent } from './components/edit-post-modal/edit-post-modal.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 const routes: Routes = [
   {

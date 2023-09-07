@@ -9,11 +9,9 @@ import {Router} from "@angular/router";
 })
 export class UserAuthService {
   userData: any;
-  renderUserData: any;
   isAuth: boolean = false
   error: any
-  loadingUserData: boolean = false
-  userData$ = new BehaviorSubject<any>({})
+  userData$ = new BehaviorSubject<any>(null)
 
   constructor(
     public afAuth: AngularFireAuth,
@@ -22,14 +20,14 @@ export class UserAuthService {
   ) {}
 
   signIn(email: string, password: string) {
-    return this.afAuth
+    return from(this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then(user => {
         if(user) {
           this.isAuth = true
           let userDataTemp: any = user.user?.multiFactor
           this.userData = userDataTemp.user
-          console.log(this.userData, 'sign in')
+          this.userData$.next(this.userData)
           localStorage.setItem('user', JSON.stringify(this.userData))
           this.router.navigate(['/fbi'])
           return this.userData
@@ -40,13 +38,14 @@ export class UserAuthService {
         this.userData = null
         localStorage.removeItem('user')
         return null
-      })
+      }))
   }
 
   signOut() {
     return this.afAuth.signOut().then(() => {
       this.isAuth = false
       this.userData = null
+      this.userData$.next(null)
       localStorage.removeItem('user')
     })
   }

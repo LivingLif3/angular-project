@@ -1,38 +1,44 @@
 import { Injectable } from '@angular/core';
 import {FbiService} from "./fbi.service";
+import {pageTypes} from "../types/page-types";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChooseElementService {
 
-  chosenElement: number = 0
-  chosenEditedElement: number = 0
+  page: pageTypes = 'originalPage'
+
+  criminal: any = this.fbiService.criminals[0]
+  editedCriminal: any = this.fbiService.editedPosts[0]
+
+  criminalData$ = new BehaviorSubject<any>({}) // FOR ADDITIONAL INFO UPDATE IN NgOnInit ORIGINAL PAGE
+  editedCriminalData$ = new BehaviorSubject<any>({}) // FOR ADDITIONAL INFO UPDATE IN NgOnInit EDITED PAGE
 
   constructor(
     private fbiService: FbiService
   ) {
-
   }
 
   // For original elements
 
-  chooseElement(index: number, pageIndex: number, itemsPerPage: number): number {
-    this.chosenElement = pageIndex * itemsPerPage + index
-    let elementIndex = this.fbiService.editedPosts.findIndex((element: any) => element['@id'] === this.fbiService.criminals[this.chosenElement]['@id'])
-    console.log(this.fbiService.editedPosts)
-    console.log(elementIndex)
+  chooseElement(criminal: any): void {
+    let elementIndex = this.fbiService.editedPosts.findIndex((element: any) => element['@id'] === criminal['@id'])
     if(elementIndex !== -1) {
-      this.chosenEditedElement = elementIndex
+      this.editedCriminal = criminal
+      this.editedCriminalData$.next(this.editedCriminal)
+    } else {
+      this.criminal = criminal
+      this.criminalData$.next(this.criminal)
     }
-    return this.chosenElement
   }
 
   // For edited elements
 
-  chooseEditedElement(index: number, pageIndex: number, itemsPerPage: number) {
-    this.chosenEditedElement = pageIndex * itemsPerPage + index
-    return this.chosenEditedElement
+  chooseEditedElement(criminal: any) {
+    this.editedCriminal = criminal
+    this.editedCriminalData$.next(this.editedCriminal)
   }
 
 }

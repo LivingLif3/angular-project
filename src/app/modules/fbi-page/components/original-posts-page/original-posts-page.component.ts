@@ -3,7 +3,7 @@ import {FormBuilder} from "@angular/forms";
 import {FbiService} from "../../../../../core/services/fbi.service";
 import {ChooseElementService} from "../../../../../core/services/choose-element.service";
 import {AdditionalFieldsService} from "../../../../../core/services/additional-fields.service";
-import {finalize, take} from "rxjs";
+import {finalize, map, mergeMap, take} from "rxjs";
 
 @Component({
   selector: 'app-original-posts-page',
@@ -16,11 +16,10 @@ export class OriginalPostsPageComponent implements OnInit {
   loading: boolean = false
   showAdditionalInfo: boolean = false
   criminals: any = []
-  chosenElement: number = 0
 
   // Paginator fields
 
-  @ViewChild('paginator', { read: ElementRef })
+  @ViewChild('paginator', {read: ElementRef})
   paginator!: ElementRef
 
   showedCriminals: any = []
@@ -29,26 +28,16 @@ export class OriginalPostsPageComponent implements OnInit {
   pageIndex: number = 0
   itemsPerPage: number = 20
 
+  // Additional information fields
+
+  chosenCriminal: any = this.fbiService.criminals[0]
+
   // Edit Modal fields
 
   isOpen: boolean = false
 
-  editFormGroup = this.fb.group({ // camelCase
-    title: [''],
-    age_range: [''],
-    sex: [''],
-    weight: [''],
-    race_raw: [''],
-    nationality: [''],
-    hair_raw: [''],
-    eyes: [''],
-    reward_text: [''],
-    description: ['']
-  })
-
   constructor(
     public fbiService: FbiService,
-    public fieldsService: AdditionalFieldsService,
     private fb: FormBuilder,
     private ref: ChangeDetectorRef,
     private chooseElementService: ChooseElementService
@@ -57,24 +46,45 @@ export class OriginalPostsPageComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true
-    this.chosenElement = this.chooseElementService.chosenElement
-    this.fbiService.getEditedPosts().pipe(
-      take(1),
-      finalize(() => {
-        console.log("DSADOQJPGQPQPOPj")
-        this.fbiService.getPeople().subscribe((criminals: any) => {
-          this.criminals = criminals.items
-          this.showedCriminals = this.criminals
-          this.fbiService.criminals = this.criminals
 
-          this.length = criminals.total
-          this.loading = false
-          this.ref.markForCheck()
-        })
-      })
-    ).subscribe((editedPosts) => {
-      this.fbiService.editedPosts = editedPosts
+    this.fbiService.getEditedPosts().pipe(
+      map(editedPosts => {
+        this.fbiService.editedPosts = editedPosts
+      }),
+      mergeMap(() => this.fbiService.getPeople())
+    ).subscribe((criminals) => {
+      this.criminals = criminals.items
+      this.showedCriminals = this.criminals
+      this.fbiService.criminals = this.criminals
+
+      this.length = criminals.total
       this.loading = false
+      this.ref.markForCheck()
+    })
+
+    // this.fbiService.getEditedPosts().pipe( // Исправить вложенные подписки
+    //   take(1),
+    //   finalize(() => {
+    //     console.log("DSADOQJPGQPQPOPj")
+    //     this.fbiService.getPeople().subscribe((criminals: any) => {
+    //       this.criminals = criminals.items
+    //       this.showedCriminals = this.criminals
+    //       this.fbiService.criminals = this.criminals
+    //
+    //       this.length = criminals.total
+    //       this.loading = false
+    //       this.ref.markForCheck()
+    //     })
+    //   })
+    // ).subscribe((editedPosts) => {
+    //   this.fbiService.editedPosts = editedPosts
+    //   this.loading = false
+    // })
+
+
+    this.chooseElementService.criminalData$.subscribe(criminal => {
+      console.log(criminal, "CRIMINALLL")
+      this.chosenCriminal = criminal
     })
   }
 
@@ -86,8 +96,12 @@ export class OriginalPostsPageComponent implements OnInit {
     this.showAdditionalInfo = false
   }
 
-  chooseElement(elementIndex: number) {
-    this.chosenElement = this.chooseElementService.chooseElement(elementIndex, this.pageIndex, this.itemsPerPage)
+  // Additional info methods
+
+  choose() {
+    console.log(this.chosenCriminal, "HAHAHAHH")
+    this.chooseElementService.chooseElement(this.chosenCriminal)
+    this.ref.markForCheck()
   }
 
   // Modal methods
@@ -99,27 +113,11 @@ export class OriginalPostsPageComponent implements OnInit {
     console.log(this.isOpen)
   }
 
-  edit() {
-    let data = {...this.criminals[this.chosenElement]}
-
-    for (let key in this.editFormGroup.controls) {
-      if (this.editFormGroup.get(key)?.value) {
-        data[key] = this.editFormGroup.get(key)?.value
-      }
-    }
-    if(Object.keys(this.fieldsService.additionalFields).length) {
-      data.added_fields = this.fieldsService.additionalFields
-    } else {
-      data.added_fields = null
-    }
-    this.fbiService.addEditedPost(data)
-  }
-
   // Paginator methods
 
   onPaginateChange(event: any) {
     this.pageIndex = event.pageIndex
-    if(!this.hasNextPage()) {
+    if (!this.hasNextPage()) {
       this.loading = true
       this.fbiService.getPeopleByPage(this.pageIndex + 1).subscribe((newCriminals: any) => {
         this.criminals = [...this.criminals, ...newCriminals.items]
