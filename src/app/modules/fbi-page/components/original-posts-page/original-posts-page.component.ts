@@ -99,18 +99,12 @@ export class OriginalPostsPageComponent implements OnInit {
   // Additional info methods
 
   choose() {
-    console.log(this.chosenCriminal, "HAHAHAHH")
     this.chooseElementService.chooseElement(this.chosenCriminal)
     this.ref.markForCheck()
   }
 
-  // Modal methods
-
-  open() {
-    console.log("HERE")
-    console.log(this.isOpen, 'BEFORE SET')
-    this.isOpen = true
-    console.log(this.isOpen)
+  onCardChange(criminal: any): void {
+    this.chosenCriminal = criminal
   }
 
   // Paginator methods

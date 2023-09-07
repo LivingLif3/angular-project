@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-criminals-container',
@@ -9,6 +9,19 @@ import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 export class CriminalsContainerComponent {
 
   @Input() loading: boolean = false
-  @Input() criminalInfo!: any
+  @Input() criminals!: any
+  @Input() edit: boolean = false
+
+  @Output() onChoose = new EventEmitter()
+  @Output() infoCardChange = new EventEmitter()
+
+  choose() {
+    this.onChoose.emit()
+  }
+
+  onChangeCard(criminal: any) {
+    this.infoCardChange.emit(criminal)
+  }
+
 
 }

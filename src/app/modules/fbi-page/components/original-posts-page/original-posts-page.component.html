@@ -12,18 +12,25 @@
     <ng-template [ngIf]="loading">
       <mat-spinner></mat-spinner>
     </ng-template>
-    <div class="criminals" *ngIf="!loading">
-      <ng-container *ngFor="let criminal of showedCriminals; let i = index">
-        <app-fbi-card
-          [infoCard]="criminal"
-          (infoCardChange)="chosenCriminal=criminal"
-          [index]="i"
-          (clickEdit)="open()"
-          [edit]="false"
-          (onChoose)="choose()"
-        ></app-fbi-card>
-      </ng-container>
-    </div>
+    <!--        infoCardChange, clickEdit, edit, onChoose-->
+<!--    <div class="criminals" *ngIf="!loading">-->
+<!--      <ng-container *ngFor="let criminal of showedCriminals; let i = index">-->
+<!--        <app-fbi-card-->
+<!--          [infoCard]="criminal"-->
+<!--          (infoCardChange)="chosenCriminal=criminal"-->
+<!--          [index]="i"-->
+<!--          [edit]="false"-->
+<!--          (onChoose)="choose()"-->
+<!--        ></app-fbi-card>-->
+<!--      </ng-container>-->
+<!--    </div>-->
+    <app-criminals-container
+      [criminals]="showedCriminals"
+      [loading]="loading"
+      (onChoose)="choose()"
+      (infoCardChange)="onCardChange($event)"
+    >
+    </app-criminals-container>
   </div>
   <ng-container *ngIf="showAdditionalInfo">
     <app-criminal-info

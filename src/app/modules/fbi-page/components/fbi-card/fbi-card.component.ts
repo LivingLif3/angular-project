@@ -54,6 +54,7 @@ export class FbiCardComponent implements OnInit {
   }
 
   onEdit() {
+    this.additionalService.clearFields()
     this.modalService.openEditModal()
   }
 }

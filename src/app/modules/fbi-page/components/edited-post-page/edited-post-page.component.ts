@@ -65,6 +65,10 @@ export class EditedPostPageComponent implements OnInit {
     this.ref.markForCheck()
   }
 
+  onCardChange(criminal: any): void {
+    this.editedCriminal = criminal
+  }
+
   // Paginator methods
 
   onPaginateChange(event: any) {
