@@ -88,3 +88,9 @@
   align-items: center;
   margin-top: 5px;
 }
+
+@media (max-width: 1000px) {
+  .criminals {
+    width: 450px;
+  }
+}

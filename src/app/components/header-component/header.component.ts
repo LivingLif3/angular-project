@@ -1,8 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {UserAuthService} from "../../../core/services/user-auth.service";
-import {user} from "@angular/fire/auth";
+import {UserAuthService} from "../../core/services/user-auth.service";
 import {Router} from "@angular/router";
-import {ModalService} from "../../../core/services/modal.service";
+import {ModalService} from "../../core/services/modal.service";
 
 @Component({
   selector: 'app-header',
@@ -26,7 +25,6 @@ export class HeaderComponent implements OnInit, OnDestroy{
 
   ngOnInit() {
     this.authService.userData$.subscribe((user) => {
-      console.log(user, "DSADSADASD")
       if(user) {
         this.isAuth = true
         this.ref.markForCheck()

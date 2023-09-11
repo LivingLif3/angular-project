@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {UserAuthService} from "../../../core/services/user-auth.service";
-import {ModalService} from "../../../core/services/modal.service";
+import {UserAuthService} from "../../core/services/user-auth.service";
+import {ModalService} from "../../core/services/modal.service";
 
 @Component({
   selector: 'app-auth-modal',

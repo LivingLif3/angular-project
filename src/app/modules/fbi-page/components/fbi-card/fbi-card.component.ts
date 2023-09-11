@@ -7,9 +7,9 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import {AdditionalFieldsService} from "../../../../../core/services/additional-fields.service";
-import {FbiService} from "../../../../../core/services/fbi.service";
-import {ModalService} from "../../../../../core/services/modal.service";
+import {AdditionalFieldsService} from "../../../../core/services/additional-fields.service";
+import {FbiService} from "../../../../core/services/fbi.service";
+import {ModalService} from "../../../../core/services/modal.service";
 
 @Component({
   selector: 'app-fbi-card',
@@ -43,7 +43,7 @@ export class FbiCardComponent implements OnInit {
       let index = this.fbiService.editedPosts.findIndex((criminal: any) => criminal['@id'] === this.infoCard['@id'])
       if (index !== -1) {
         this.editStatus = true
-        this.ref.markForCheck()
+        // this.ref.markForCheck()
       }
     }
   }

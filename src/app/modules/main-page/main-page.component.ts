@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {UserAuthService} from "../../../core/services/user-auth.service";
+import {UserAuthService} from "../../core/services/user-auth.service";
 import {concatMap, finalize} from "rxjs";
-import {IUserData} from "../../../core/interfaces/user-interface";
+import {IUserData} from "../../core/interfaces/user-interface";
 
 @Component({
   selector: 'app-main-page',

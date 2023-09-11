@@ -5,8 +5,8 @@ import {RouterModule, Routes} from "@angular/router";
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { UserCardComponent } from './components/user-card/user-card.component';
 import {MatDividerModule} from '@angular/material/divider';
-import {authGuard} from "../../../core/guards/auth.guard";
-import {DefaultValueModule} from "../../../core/pipes/default-value/default-value.module";
+import {authGuard} from "../../core/guards/auth.guard";
+import {DefaultValueModule} from "../../core/pipes/default-value/default-value.module";
 
 const routes: Routes = [
   {

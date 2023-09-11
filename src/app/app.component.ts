@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnChanges, OnDestroy, OnInit} from '@angular/core';
-import {UserAuthService} from "../core/services/user-auth.service";
+import {UserAuthService} from "./core/services/user-auth.service";
 import {Router} from "@angular/router";
 
 @Component({

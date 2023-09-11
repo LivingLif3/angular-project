@@ -1,8 +1,16 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
-import {FbiService} from "../../../../../core/services/fbi.service";
-import {ChooseElementService} from "../../../../../core/services/choose-element.service";
-import {AdditionalFieldsService} from "../../../../../core/services/additional-fields.service";
+import {FbiService} from "../../../../core/services/fbi.service";
+import {ChooseElementService} from "../../../../core/services/choose-element.service";
+import {AdditionalFieldsService} from "../../../../core/services/additional-fields.service";
 import {finalize, map, mergeMap, take} from "rxjs";
 
 @Component({
@@ -31,10 +39,6 @@ export class OriginalPostsPageComponent implements OnInit {
   // Additional information fields
 
   chosenCriminal: any = this.fbiService.criminals[0]
-
-  // Edit Modal fields
-
-  isOpen: boolean = false
 
   constructor(
     public fbiService: FbiService,
@@ -83,7 +87,6 @@ export class OriginalPostsPageComponent implements OnInit {
 
 
     this.chooseElementService.criminalData$.subscribe(criminal => {
-      console.log(criminal, "CRIMINALLL")
       this.chosenCriminal = criminal
     })
   }
@@ -134,5 +137,9 @@ export class OriginalPostsPageComponent implements OnInit {
   hasNextPage(): boolean {
     return this.pageIndex <= Math.ceil(this.criminals.length / this.itemsPerPage) - 1;
   }
+
+  // ngOnDestroy() {
+  //   this.chooseElementService.criminalData$.unsubscribe()
+  // }
 
 }

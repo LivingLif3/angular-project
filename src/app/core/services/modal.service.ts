@@ -1,7 +1,7 @@
 import {ElementRef, Injectable} from '@angular/core';
 import {MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
-import {AuthModalComponent} from "../../app/components/auth-modal/auth-modal.component";
-import {EditPostModalComponent} from "../../app/modules/fbi-page/components/edit-post-modal/edit-post-modal.component";
+import {AuthModalComponent} from "../../components/auth-modal/auth-modal.component";
+import {EditPostModalComponent} from "../../modules/fbi-page/components/edit-post-modal/edit-post-modal.component";
 
 @Injectable({
   providedIn: 'root'

@@ -16,7 +16,7 @@
         <mat-form-field>
           <mat-label>Age</mat-label>
           <input matInput
-                 (input)="filterNumericInput($event)" placeholder="Last name, First name" formControlName="age_range"
+                 (input)="filterNumericInput($event)" placeholder="Last name, First name" formControlName="ageRange"
                  required>
         </mat-form-field>
         <div>
@@ -44,7 +44,7 @@
         <ng-template matStepLabel>Fill out race</ng-template>
         <mat-form-field>
           <mat-label>Race</mat-label>
-          <input matInput placeholder="Last name, First name" formControlName="race_raw" required>
+          <input matInput placeholder="Last name, First name" formControlName="raceRaw" required>
         </mat-form-field>
         <div>
           <button mat-button matStepperNext>Next</button>
@@ -64,7 +64,7 @@
         <ng-template matStepLabel>Fill out hair</ng-template>
         <mat-form-field>
           <mat-label>Hair</mat-label>
-          <input matInput placeholder="Last name, First name" formControlName="hair_raw" required>
+          <input matInput placeholder="Last name, First name" formControlName="hairRaw" required>
         </mat-form-field>
         <div>
           <button mat-button matStepperNext>Next</button>
@@ -84,7 +84,7 @@
         <ng-template matStepLabel>Fill out reward</ng-template>
         <mat-form-field>
           <mat-label>Reward</mat-label>
-          <input matInput placeholder="Last name, First name" formControlName="reward_text" required>
+          <input matInput placeholder="Last name, First name" formControlName="rewardText" required>
         </mat-form-field>
         <div>
           <button mat-button matStepperNext>Next</button>

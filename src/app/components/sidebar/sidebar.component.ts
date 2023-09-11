@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import {IRoutes} from "../../../core/interfaces/routes-interface";
+import {IRoutes} from "../../core/interfaces/routes-interface";
 
 @Component({
   selector: 'app-sidebar',

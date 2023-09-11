@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {IUserData} from "../../../../../core/interfaces/user-interface";
+import {IUserData} from "../../../../core/interfaces/user-interface";
 
 @Component({
   selector: 'app-user-card',

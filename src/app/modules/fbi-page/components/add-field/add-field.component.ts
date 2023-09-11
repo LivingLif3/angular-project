@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
-import {AdditionalFieldsService} from "../../../../../core/services/additional-fields.service";
+import {AdditionalFieldsService} from "../../../../core/services/additional-fields.service";
 
 @Component({
   selector: 'app-add-field',

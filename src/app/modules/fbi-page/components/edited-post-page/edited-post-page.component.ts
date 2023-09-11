@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {FbiService} from "../../../../../core/services/fbi.service";
-import {ChooseElementService} from "../../../../../core/services/choose-element.service";
+import {FbiService} from "../../../../core/services/fbi.service";
+import {ChooseElementService} from "../../../../core/services/choose-element.service";
 
 @Component({
   selector: 'app-edited-post-page',
