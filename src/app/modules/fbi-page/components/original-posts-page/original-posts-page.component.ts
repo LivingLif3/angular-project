@@ -50,20 +50,6 @@ export class OriginalPostsPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loading = true
 
-    // this.fbiService.getEditedPosts().pipe(
-    //   map(editedPosts => {
-    //     this.fbiService.editedPosts = editedPosts
-    //   }),
-    //   mergeMap(() => this.fbiService.getPeople())
-    // ).subscribe((criminals) => {
-    //   this.showedCriminals = criminals.items
-    //   this.fbiService.criminals = criminals.items
-    //
-    //   this.length = criminals.total
-    //   this.loading = false
-    //   this.ref.markForCheck()
-    // })
-
     this.fbiService.getEditedPosts().pipe(
       tap((editedPosts: any) => {
         this.fbiService.editedPosts = editedPosts
@@ -79,7 +65,6 @@ export class OriginalPostsPageComponent implements OnInit, OnDestroy {
     })
 
     this.chooseElementService.criminalData$.subscribe(criminal => {
-      console.log(criminal, 'INSIDE criminalData$ subscribe')
       this.chosenCriminal = criminal
     })
   }
@@ -95,13 +80,11 @@ export class OriginalPostsPageComponent implements OnInit, OnDestroy {
   // Additional info methods
 
   choose() {
-    console.log(this.chosenCriminal, 'IN CHOOSE')
     this.chooseElementService.chooseElement(this.chosenCriminal)
     this.ref.markForCheck()
   }
 
   onCardChange(criminal: any): void {
-    console.log(criminal, "NIKITA NAHLA YEBAK")
     this.chosenCriminal = criminal
   }
 
