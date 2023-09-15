@@ -1,4 +1,4 @@
-.contentWrapper {
+.content-wrapper {
   display: flex;
   width: 100%;
 }
@@ -7,7 +7,7 @@
   width: 100%;
 }
 
-.signInWrapper {
+.sign-in-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;

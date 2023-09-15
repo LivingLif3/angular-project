@@ -23,7 +23,7 @@
   cursor: pointer;
 }
 
-.criminalsWrapper {
+.criminals-wrapper {
   display: flex;
   justify-content: center;
   height: calc(100vh - 50px - 140px - 50px);
@@ -39,15 +39,6 @@
   justify-content: center;
   height: 100px;
   padding: 0px;
-}
-
-.paginatorButton {
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  padding: 10px;
 }
 
 .criminals {
@@ -72,21 +63,6 @@
 
 .link:hover {
   color: #537072;
-}
-
-.addFieldButtonWrapper {
-  width: 100%;
-  height: auto;
-  display: flex;
-  justify-content: center;
-}
-
-.addFieldButton {
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 5px;
 }
 
 @media (max-width: 1000px) {

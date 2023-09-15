@@ -1,17 +1,17 @@
 <mat-card class="example-card" (click)="choose()">
   <mat-card-header class="header">
     <ng-template [ngIf]="editStatus">
-      <mat-icon class="editIcon">edit</mat-icon>
+      <mat-icon class="edit-icon">edit</mat-icon>
     </ng-template>
   </mat-card-header>
-  <mat-card-header class="headerInfo">
+  <mat-card-header class="header-info">
     <mat-card-title>{{infoCard.title}}</mat-card-title>
     <button mat-button (click)="onEdit()" [ngStyle]="{'display': edit ? 'none' : 'block'}">edit</button>
   </mat-card-header>
   <img mat-card-image src="{{infoCard.images[0].original}}" alt="no photo">
   <mat-card-content>
     <p>Nationality: {{infoCard.nationality | defaultValue}}</p>
-    <p>Hair: {{infoCard.hair | defaultValue}}</p>
+    <p>Hair: {{infoCard.hair_raw | defaultValue}}</p>
     <p>Race: {{infoCard.race | defaultValue}}</p>
     <p>Description: {{infoCard.description || 'none'}}</p>
   </mat-card-content>

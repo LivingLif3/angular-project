@@ -20,8 +20,8 @@ export class AdditionalFieldsService {
   }
 
   removeField(name: string) {
-    delete this.additionalFields[name]
-    this.additionalFields = {...this.additionalFields}
+    let {[name]: nameOfField, ...otherObj} = this.additionalFields
+    this.additionalFields = otherObj
   }
 
   clearFields() {

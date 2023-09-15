@@ -1,10 +1,10 @@
-.profileCard {
+.profile-card {
   padding: 20px;
   border: 2px solid #2C4A52;
   width: 90%;
 }
 
-.avatarWrapper {
+.avatar-wrapper {
   display: flex;
   width: 100%;
   justify-content: center;

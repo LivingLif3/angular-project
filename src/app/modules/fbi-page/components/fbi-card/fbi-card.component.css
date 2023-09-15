@@ -10,11 +10,11 @@
   height: 10px;
 }
 
-.headerInfo {
+.header-info {
   display: flex;
   align-items: center;
 }
 
-.editIcon {
+.edit-icon {
   position: absolute;
 }

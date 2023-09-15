@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {FbiService} from "../../../../core/services/fbi.service";
 import {ChooseElementService} from "../../../../core/services/choose-element.service";
 
@@ -8,7 +8,7 @@ import {ChooseElementService} from "../../../../core/services/choose-element.ser
   styleUrls: ['./edited-post-page.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditedPostPageComponent implements OnInit {
+export class EditedPostPageComponent implements OnInit, OnDestroy {
 
   loading: boolean = false
   editedPosts: any = []
@@ -79,6 +79,10 @@ export class EditedPostPageComponent implements OnInit {
 
   changeShowedCriminals() {
     return this.editedPosts.slice(this.pageIndex * this.itemsPerPage, (this.pageIndex + 1) * this.itemsPerPage)
+  }
+
+  ngOnDestroy() {
+    this.chooseElementService.editedCriminalData$.unsubscribe()
   }
 
 }

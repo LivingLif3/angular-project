@@ -1,7 +1,7 @@
 <app-header [isAuth]="isAuth"></app-header>
-<div class="contentWrapper">
+<div class="content-wrapper">
   <app-sidebar></app-sidebar>
-  <div class="signInWrapper" *ngIf="!isAuth; else routers">
+  <div class="sign-in-wrapper" *ngIf="!isAuth; else routers">
     <h2 class="label">Authorization</h2>
     <div class="inputContainer">
       <mat-form-field class="input">

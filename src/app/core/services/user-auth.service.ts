@@ -36,6 +36,7 @@ export class UserAuthService {
       .catch(e => {
         this.isAuth = false
         this.userData = null
+        this.userData$.next(null)
         localStorage.removeItem('user')
         return null
       }))

@@ -35,19 +35,4 @@ export class FbiService {
 
     return collectionData(collectionInstance)
   }
-
-  updateAddedFields(id: string, fields: any) {
-    const docInstance = doc(this.firestore, 'posts', id)
-    const updateData = {
-      added_fields: fields
-    }
-
-    updateDoc(docInstance, updateData).then(
-      () => {
-        console.log("DATA UPDATED")
-      }
-    ).catch(err => {
-      console.log(err)
-    })
-  }
 }

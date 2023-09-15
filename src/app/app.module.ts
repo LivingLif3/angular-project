@@ -26,6 +26,8 @@ import {FbiService} from "./core/services/fbi.service";
 import {mergeMap, tap} from "rxjs";
 import {ChooseElementService} from "./core/services/choose-element.service";
 import {MatSelectModule} from "@angular/material/select";
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
 let routes: Routes = [
   {
@@ -90,7 +92,9 @@ function initializeApplication(authService: UserAuthService, fbiService: FbiServ
     HttpClientModule,
     MatDialogModule,
     ReactiveFormsModule,
-    MatSelectModule
+    MatSelectModule,
+    MatNativeDateModule,
+    MatDatepickerModule
   ],
   providers: [
     {provide: FIREBASE_OPTIONS, useValue: environment.firebase}, // НУЖНО ПРОВАЙДИТЬ ТОКЕН, Т.К. ВЫКИДЫВАЕТ ОШИБКУ БЕЗ ЭТОГО

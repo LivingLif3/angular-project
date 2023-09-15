@@ -46,7 +46,6 @@ export class GenderComponent implements ControlValueAccessor {
 
   registerOnChange(fn: any): void {
     this.onChange = fn
-    console.log("LOPQFASFP")
   }
 
   registerOnTouched(fn: any): void {
@@ -54,7 +53,6 @@ export class GenderComponent implements ControlValueAccessor {
 
   writeValue(value: gender): void {
     this.gender = value
-    console.log("WRITE VALUE")
   }
 
 }

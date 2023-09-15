@@ -1,4 +1,4 @@
-.addedFieldInfo {
+.added-field-info {
   position: relative;
   display: block;
   background-color: #ececec;
@@ -40,6 +40,15 @@
   height: 100%;
 }
 
-.addedFieldInfo:hover .buttons {
+.added-field-info:hover .buttons {
   opacity: 1;
+}
+
+.delete-button {
+  background: #ececec;
+  margin-right: 10px;
+}
+
+.edit-button {
+  background: #ececec;
 }

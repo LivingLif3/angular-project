@@ -27,7 +27,9 @@ export class ChooseElementService {
     let elementIndex = this.fbiService.editedPosts.findIndex((element: any) => element['@id'] === criminal['@id'])
     if(elementIndex !== -1) {
       this.editedCriminal = criminal
+      this.criminal = criminal
       this.editedCriminalData$.next(this.editedCriminal)
+      this.criminalData$.next(this.criminal)
     } else {
       this.criminal = criminal
       this.criminalData$.next(this.criminal)

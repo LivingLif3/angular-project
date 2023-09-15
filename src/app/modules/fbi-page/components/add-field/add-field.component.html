@@ -1,4 +1,4 @@
-<div class="addField">
+<div class="add-field">
   <mat-form-field>
     <mat-label>Enter name of field</mat-label>
     <input type="text" matInput [value]="name" (change)="changeName($event)">
@@ -7,22 +7,22 @@
     <ng-template ngSwitchCase="string">
       <mat-form-field>
         <mat-label>Enter value of field</mat-label>
-        <input type="text" matInput [value]="value" (change)="changeInput($event)">
+        <input type="text" matInput [(ngModel)]="value" (ngModelChange)="anotherChangeInput($event)">
       </mat-form-field>
     </ng-template>
     <ng-template ngSwitchCase="number">
       <mat-form-field>
         <mat-label>Enter value of field</mat-label>
-        <input type="number" matInput [value]="value" (change)="changeInput($event)">
+        <input type="number" matInput [(ngModel)]="value" (ngModelChange)="anotherChangeInput($event)">
       </mat-form-field>
     </ng-template>
     <ng-template ngSwitchCase="boolean">
-      <mat-checkbox class="example-margin" [ngModel]="value" (change)="changeInput($event)">Checked</mat-checkbox>
+      <mat-checkbox class="example-margin" [(ngModel)]="value" (ngModelChange)="anotherChangeInput($event)">Checked</mat-checkbox>
     </ng-template>
     <ng-template ngSwitchCase="date">
       <mat-form-field>
         <mat-label>Choose a date</mat-label>
-        <input matInput [matDatepicker]="picker" [value]="value" (dateChange)="changeInput($event)">
+        <input matInput [matDatepicker]="picker" [(ngModel)]="value" (ngModelChange)="anotherChangeInput($event)">
         <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>

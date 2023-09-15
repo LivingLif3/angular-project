@@ -11,7 +11,7 @@ import {FormBuilder} from "@angular/forms";
 import {FbiService} from "../../../../core/services/fbi.service";
 import {ChooseElementService} from "../../../../core/services/choose-element.service";
 import {AdditionalFieldsService} from "../../../../core/services/additional-fields.service";
-import {finalize, map, mergeMap, take} from "rxjs";
+import {finalize, map, mergeMap, switchMap, take, tap} from "rxjs";
 
 @Component({
   selector: 'app-original-posts-page',
@@ -19,11 +19,10 @@ import {finalize, map, mergeMap, take} from "rxjs";
   styleUrls: ['./original-posts-page.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OriginalPostsPageComponent implements OnInit {
+export class OriginalPostsPageComponent implements OnInit, OnDestroy {
 
   loading: boolean = false
   showAdditionalInfo: boolean = false
-  criminals: any = []
 
   // Paginator fields
 
@@ -51,42 +50,36 @@ export class OriginalPostsPageComponent implements OnInit {
   ngOnInit() {
     this.loading = true
 
-    this.fbiService.getEditedPosts().pipe(
-      map(editedPosts => {
-        this.fbiService.editedPosts = editedPosts
-      }),
-      mergeMap(() => this.fbiService.getPeople())
-    ).subscribe((criminals) => {
-      this.criminals = criminals.items
-      this.showedCriminals = this.criminals
-      this.fbiService.criminals = this.criminals
-
-      this.length = criminals.total
-      this.loading = false
-      this.ref.markForCheck()
-    })
-
-    // this.fbiService.getEditedPosts().pipe( // Исправить вложенные подписки
-    //   take(1),
-    //   finalize(() => {
-    //     console.log("DSADOQJPGQPQPOPj")
-    //     this.fbiService.getPeople().subscribe((criminals: any) => {
-    //       this.criminals = criminals.items
-    //       this.showedCriminals = this.criminals
-    //       this.fbiService.criminals = this.criminals
+    // this.fbiService.getEditedPosts().pipe(
+    //   map(editedPosts => {
+    //     this.fbiService.editedPosts = editedPosts
+    //   }),
+    //   mergeMap(() => this.fbiService.getPeople())
+    // ).subscribe((criminals) => {
+    //   this.showedCriminals = criminals.items
+    //   this.fbiService.criminals = criminals.items
     //
-    //       this.length = criminals.total
-    //       this.loading = false
-    //       this.ref.markForCheck()
-    //     })
-    //   })
-    // ).subscribe((editedPosts) => {
-    //   this.fbiService.editedPosts = editedPosts
+    //   this.length = criminals.total
     //   this.loading = false
+    //   this.ref.markForCheck()
     // })
 
+    this.fbiService.getEditedPosts().pipe(
+      tap((editedPosts: any) => {
+        this.fbiService.editedPosts = editedPosts
+      }),
+      switchMap(() => this.fbiService.getPeople())
+    ).subscribe((criminals: any) => {
+        this.showedCriminals = criminals.items
+        this.fbiService.criminals = criminals.items
+
+        this.length = criminals.total
+        this.loading = false
+        this.ref.markForCheck()
+    })
 
     this.chooseElementService.criminalData$.subscribe(criminal => {
+      console.log(criminal, 'INSIDE criminalData$ subscribe')
       this.chosenCriminal = criminal
     })
   }
@@ -102,44 +95,30 @@ export class OriginalPostsPageComponent implements OnInit {
   // Additional info methods
 
   choose() {
+    console.log(this.chosenCriminal, 'IN CHOOSE')
     this.chooseElementService.chooseElement(this.chosenCriminal)
     this.ref.markForCheck()
   }
 
   onCardChange(criminal: any): void {
+    console.log(criminal, "NIKITA NAHLA YEBAK")
     this.chosenCriminal = criminal
   }
 
   // Paginator methods
 
   onPaginateChange(event: any) {
-    this.pageIndex = event.pageIndex
-    if (!this.hasNextPage()) {
-      this.loading = true
-      this.fbiService.getPeopleByPage(this.pageIndex + 1).subscribe((newCriminals: any) => {
-        this.criminals = [...this.criminals, ...newCriminals.items]
-        this.fbiService.criminals = this.criminals
-        this.showedCriminals = this.changeShowedCriminals()
-
-        this.loading = false
-        this.ref.markForCheck()
-      })
-    } else {
-      this.showedCriminals = this.changeShowedCriminals()
+    this.loading = true
+    this.fbiService.getPeopleByPage(event.pageIndex + 1).subscribe((newCriminals: any) => {
+      this.fbiService.criminals = newCriminals.items
+      this.showedCriminals = newCriminals.items
+      this.loading = false
       this.ref.markForCheck()
-    }
+    })
   }
 
-  changeShowedCriminals() {
-    return this.criminals.slice(this.pageIndex * this.itemsPerPage, (this.pageIndex + 1) * this.itemsPerPage)
+  ngOnDestroy() {
+    this.chooseElementService.criminalData$.unsubscribe()
   }
-
-  hasNextPage(): boolean {
-    return this.pageIndex <= Math.ceil(this.criminals.length / this.itemsPerPage) - 1;
-  }
-
-  // ngOnDestroy() {
-  //   this.chooseElementService.criminalData$.unsubscribe()
-  // }
 
 }

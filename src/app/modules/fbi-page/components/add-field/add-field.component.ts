@@ -33,6 +33,10 @@ export class AddFieldComponent {
   ) {
   }
 
+  anotherChangeInput(event: any) {
+    this.valueChange.emit(event)
+  }
+
   changeInput(event: any) {
     if (!this.getErrorStatus()) {
       this.validateError = this.getErrorStatus()
@@ -64,10 +68,6 @@ export class AddFieldComponent {
     }
   }
 
-  isValidDate(dateString: string) {
-    return !isNaN(Date.parse(dateString));
-  }
-
   changeSelect() {
     if (this.type === 'string') {
       this.value = ''
@@ -85,14 +85,16 @@ export class AddFieldComponent {
   }
 
   addField() {
-    this.fieldsService.addField({
-        name: this.name,
-        value: this.value
-      },
-      this.type)
-    this.nameChange.emit("")
-    this.valueChange.emit("")
-    this.typeChange.emit("string")
+    if(Boolean(this.value) && Boolean(this.name)) {
+      this.fieldsService.addField({
+          name: this.name,
+          value: this.value
+        },
+        this.type)
+      this.nameChange.emit("")
+      this.valueChange.emit("")
+      this.typeChange.emit("string")
+    }
   }
 
 }
