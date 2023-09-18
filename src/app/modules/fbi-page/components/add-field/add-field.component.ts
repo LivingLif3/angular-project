@@ -10,7 +10,6 @@ import {AdditionalFieldsService} from "../../../../core/services/additional-fiel
 export class AddFieldComponent {
 
   validateError: boolean = false
-  selectValue: string = 'string'
 
   types: string[] = [
     "string",
@@ -19,14 +18,20 @@ export class AddFieldComponent {
     "date"
   ]
 
-  @Input() value: any = ""
-  @Output() valueChange = new EventEmitter()
+  defaultValues: any = {
+    string: "",
+    number: 0,
+    boolean: false,
+    date: ""
+  }
 
-  @Input() name: string = ""
-  @Output() nameChange = new EventEmitter()
+  @Input() additionalFieldInfo!: any
+  @Output() additionalFieldInfoChange = new EventEmitter()
 
-  @Input() type: string = "string"
-  @Output() typeChange = new EventEmitter()
+  @Output() addFieldEvent = new EventEmitter()
+
+  @Input() additionalFields: any
+  @Output() additionalFieldsChange = new EventEmitter()
 
   constructor(
     public fieldsService: AdditionalFieldsService
@@ -34,66 +39,38 @@ export class AddFieldComponent {
   }
 
   anotherChangeInput(event: any) {
-    this.valueChange.emit(event)
-  }
-
-  changeInput(event: any) {
-    if (!this.getErrorStatus()) {
-      this.validateError = this.getErrorStatus()
-      if (event.checked !== undefined) {
-        this.valueChange.emit(event.checked)
-      } else {
-        if (this.type === "date") {
-          this.valueChange.emit(event.value)
-        } else {
-          this.valueChange.emit(event.target.value)
-        }
-      }
-    } else {
-      this.validateError = true
-    }
+    this.additionalFieldInfoChange.emit({...this.additionalFieldInfo, value: event})
   }
 
   changeName(event: any) {
-    this.nameChange.emit(event.target.value)
-  }
-
-  getErrorStatus(): boolean {
-    if (this.type === typeof this.value) {
-      return false
-    } else if (this.type === 'date') { // && this.isValidDate(this.value)
-      return false
-    } else {
-      return true
-    }
+    this.additionalFieldInfoChange.emit({...this.additionalFieldInfo, key: event.target.value})
   }
 
   changeSelect() {
-    if (this.type === 'string') {
-      this.value = ''
-      this.typeChange.emit(this.type)
-    } else if (this.type === 'number') {
-      this.value = 0
-      this.typeChange.emit(this.type)
-    } else if (this.type === 'boolean') {
-      this.value = false
-      this.typeChange.emit(this.type)
-    } else {
-      this.value = ""
-      this.typeChange.emit(this.type)
-    }
+    this.additionalFieldInfoChange.emit({
+      ...this.additionalFieldInfo,
+      value: this.defaultValues[this.additionalFieldInfo.type],
+      type: this.additionalFieldInfo.type
+    })
   }
 
   addField() {
-    if(Boolean(this.value) && Boolean(this.name)) {
-      this.fieldsService.addField({
-          name: this.name,
-          value: this.value
-        },
-        this.type)
-      this.nameChange.emit("")
-      this.valueChange.emit("")
-      this.typeChange.emit("string")
+    if(Boolean(this.additionalFieldInfo.value) && Boolean(this.additionalFieldInfo.key)) {
+      this.additionalFieldsChange.emit(
+        this.fieldsService.addField(this.additionalFields, {
+            name: this.additionalFieldInfo.key,
+            value: this.additionalFieldInfo.value
+          },
+          this.additionalFieldInfo.type)
+      )
+
+      this.addFieldEvent.emit()
+
+      this.additionalFieldInfoChange.emit({
+        key: "",
+        value: "",
+        type: "string"
+      })
     }
   }
 

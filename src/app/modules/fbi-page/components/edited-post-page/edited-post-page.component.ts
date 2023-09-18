@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {FbiService} from "../../../../core/services/fbi.service";
 import {ChooseElementService} from "../../../../core/services/choose-element.service";
+import {first, take} from "rxjs";
 
 @Component({
   selector: 'app-edited-post-page',
@@ -8,45 +9,50 @@ import {ChooseElementService} from "../../../../core/services/choose-element.ser
   styleUrls: ['./edited-post-page.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditedPostPageComponent implements OnInit, OnDestroy {
+export class EditedPostPageComponent implements OnInit {
 
   loading: boolean = false
-  editedPosts: any = []
   showAdditionalInfo: boolean = false
 
   // Additional info fields
 
-  editedCriminal: any = {}
+  editedCriminal: any = null
 
   // Paginator
 
   pageIndex: number = 0
   length: number = 0
-  itemsPerPage: number = 20
+  itemsPerPage: number = 4
 
   showedEditedPosts: any = []
 
   constructor(
     public fbiService: FbiService,
     private ref: ChangeDetectorRef,
-    private chooseElementService: ChooseElementService
+    private chooseElementService: ChooseElementService,
   ) {
   }
 
   ngOnInit() {
+
+
     this.loading = true
-    this.fbiService.getEditedPosts().subscribe((editedPosts) => {
-      this.editedPosts = editedPosts
-      this.fbiService.editedPosts = this.editedPosts
-      this.length = editedPosts.length
-      this.showedEditedPosts = this.changeShowedCriminals()
+
+    this.chooseElementService.editedCriminalData$.subscribe(editedCriminal => {
+      console.log()
+      this.editedCriminal = editedCriminal
+    })
+
+    this.fbiService.getEditedPosts(this.pageIndex, this.itemsPerPage).pipe(first()).subscribe((editedPosts) => {
+      this.length = this.fbiService.editedPosts.length
+      this.showedEditedPosts = editedPosts
+      if(!this.editedCriminal) {
+        console.log("JK")
+        this.chooseElementService.editedCriminalData$.next(editedPosts[0])
+      }
 
       this.loading = false
       this.ref.markForCheck()
-    })
-
-    this.chooseElementService.editedCriminalData$.subscribe(editedCriminal => {
-      this.editedCriminal = editedCriminal
     })
   }
 
@@ -58,31 +64,16 @@ export class EditedPostPageComponent implements OnInit, OnDestroy {
     this.showAdditionalInfo = false
   }
 
-  // Additional info
-
-  choose() {
-    this.chooseElementService.chooseElement(this.editedCriminal)
-    this.ref.markForCheck()
-  }
-
-  onCardChange(criminal: any): void {
-    this.editedCriminal = criminal
-  }
-
   // Paginator methods
 
   onPaginateChange(event: any) {
     this.pageIndex = event.pageIndex
-    this.showedEditedPosts = this.changeShowedCriminals()
-    this.ref.markForCheck()
-  }
-
-  changeShowedCriminals() {
-    return this.editedPosts.slice(this.pageIndex * this.itemsPerPage, (this.pageIndex + 1) * this.itemsPerPage)
-  }
-
-  ngOnDestroy() {
-    this.chooseElementService.editedCriminalData$.unsubscribe()
+    this.loading = true
+    this.fbiService.getEditedPosts(this.pageIndex, this.itemsPerPage).pipe(first()).subscribe((editedPosts) => {
+      this.showedEditedPosts = editedPosts
+      this.loading = false
+      this.ref.markForCheck()
+    })
   }
 
 }

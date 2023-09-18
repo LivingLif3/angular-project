@@ -1,7 +1,8 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {UserAuthService} from "../../core/services/user-auth.service";
 import {Router} from "@angular/router";
-import {ModalService} from "../../core/services/modal.service";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {AuthModalComponent} from "../auth-modal/auth-modal.component";
 
 @Component({
   selector: 'app-header',
@@ -9,16 +10,17 @@ import {ModalService} from "../../core/services/modal.service";
   styleUrls: ['./header.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit, OnDestroy{
+export class HeaderComponent implements OnInit{
   @Input() isAuth :boolean = false
 
   email: string = ""
   password: string = ""
+  authDialogRef!: MatDialogRef<AuthModalComponent>
 
   constructor(
     public authService: UserAuthService,
     private router: Router,
-    private modalService: ModalService,
+    public dialog: MatDialog,
     private ref: ChangeDetectorRef
     ) {
   }
@@ -35,16 +37,12 @@ export class HeaderComponent implements OnInit, OnDestroy{
   }
 
   openModal() {
-    this.modalService.openAuthModal()
+    this.authDialogRef = this.dialog.open(AuthModalComponent)
   }
 
   signOut() {
     this.authService.signOut()
     this.isAuth = false
     this.router.navigate([''])
-  }
-
-  ngOnDestroy() {
-    this.authService.userData$.unsubscribe()
   }
 }

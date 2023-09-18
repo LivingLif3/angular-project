@@ -10,11 +10,8 @@ export class ChooseElementService {
 
   page: pageTypes = 'originalPage'
 
-  criminal: any = this.fbiService.criminals[0]
-  editedCriminal: any = this.fbiService.editedPosts[0]
-
-  criminalData$ = new BehaviorSubject<any>({}) // FOR ADDITIONAL INFO UPDATE IN NgOnInit ORIGINAL PAGE
-  editedCriminalData$ = new BehaviorSubject<any>({}) // FOR ADDITIONAL INFO UPDATE IN NgOnInit EDITED PAGE
+  criminalData$ = new BehaviorSubject<any>(null) // FOR ADDITIONAL INFO UPDATE IN NgOnInit ORIGINAL PAGE
+  editedCriminalData$ = new BehaviorSubject<any>(null) // FOR ADDITIONAL INFO UPDATE IN NgOnInit EDITED PAGE
 
   constructor(
     private fbiService: FbiService
@@ -23,24 +20,22 @@ export class ChooseElementService {
 
   // For original elements
 
-  chooseElement(criminal: any): void {
+  // chooseElement(criminal: any): void {
+  //   let elementIndex = this.fbiService.editedPosts.findIndex((element: any) => element['@id'] === criminal['@id'])
+  //   if(elementIndex !== -1) {
+  //     this.editedCriminal = criminal
+  //     this.criminal = criminal
+  //     this.editedCriminalData$.next(this.editedCriminal)
+  //     this.criminalData$.next(this.criminal)
+  //   } else {
+  //     this.criminal = criminal
+  //     this.criminalData$.next(this.criminal)
+  //   }
+  // }
+
+  checkElementBelongsToEdited(criminal: any) {
     let elementIndex = this.fbiService.editedPosts.findIndex((element: any) => element['@id'] === criminal['@id'])
-    if(elementIndex !== -1) {
-      this.editedCriminal = criminal
-      this.criminal = criminal
-      this.editedCriminalData$.next(this.editedCriminal)
-      this.criminalData$.next(this.criminal)
-    } else {
-      this.criminal = criminal
-      this.criminalData$.next(this.criminal)
-    }
-  }
-
-  // For edited elements
-
-  chooseEditedElement(criminal: any) {
-    this.editedCriminal = criminal
-    this.editedCriminalData$.next(this.editedCriminal)
+    return elementIndex !== -1
   }
 
 }

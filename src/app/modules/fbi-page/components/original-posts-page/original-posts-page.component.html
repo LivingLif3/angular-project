@@ -15,16 +15,12 @@
     <app-criminals-container
       [criminals]="showedCriminals"
       [loading]="loading"
-      (onChoose)="choose()"
-      (infoCardChange)="onCardChange($event)"
     >
     </app-criminals-container>
   </div>
-  <ng-container *ngIf="showAdditionalInfo">
-    <app-criminal-info
-      [info]="chosenCriminal"
-    ></app-criminal-info>
-  </ng-container>
+  <app-criminal-info *ngIf="showAdditionalInfo"
+                     [info]="chosenCriminal"
+  ></app-criminal-info>
 </div>
 <div class="paginator">
   <mat-paginator [length]="length"

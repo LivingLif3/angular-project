@@ -2,7 +2,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
+  EventEmitter, Inject,
   Input,
   OnChanges,
   OnInit,
@@ -12,7 +12,7 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {AdditionalFieldsService} from "../../../../core/services/additional-fields.service";
 import {ChooseElementService} from "../../../../core/services/choose-element.service";
 import {FbiService} from "../../../../core/services/fbi.service";
-import {ModalService} from "../../../../core/services/modal.service";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-edit-post-modal',
@@ -21,6 +21,9 @@ import {ModalService} from "../../../../core/services/modal.service";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditPostModalComponent implements OnInit{
+
+  criminal: any
+  additionalFields: any = {}
 
   additionalFieldInfo = {
     key: "",
@@ -42,47 +45,41 @@ export class EditPostModalComponent implements OnInit{
   })
 
   constructor(
-    public fieldsService: AdditionalFieldsService,
     private fb: FormBuilder,
     private chooseElementService: ChooseElementService,
     private fbiService: FbiService,
-    private modalService: ModalService
+    private editDialogRef: MatDialogRef<EditPostModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
   }
 
   ngOnInit() {
-    console.log("VIEW INIT")
-    console.log(this.chooseElementService.criminal)
-    this.editFormGroup.patchValue({
-      title: this.chooseElementService.criminal.title,
-      age_range: this.chooseElementService.criminal.age_range,
-      sex: this.chooseElementService.criminal.sex,
-      weight: this.chooseElementService.criminal.weight,
-      race_raw: this.chooseElementService.criminal.race_raw,
-      nationality: this.chooseElementService.criminal.nationality,
-      hair_raw: this.chooseElementService.criminal.hair_raw,
-      eyes: this.chooseElementService.criminal.eyes,
-      reward_text: this.chooseElementService.criminal.reward_text,
-      description: this.chooseElementService.criminal.description
+    this.chooseElementService.criminalData$.subscribe(criminal => {
+      this.criminal = criminal
     })
+    this.editFormGroup.patchValue(this.data.criminal)
   }
 
   // Нужно здесь заэмитить значение на false
-  filterNumericInput(event: any) {
-    const filteredValue = event.target.value.replace(/[^0-9]/g, '');
+  filterNumericInput(value: any) {
+    const filteredValue = value.replace(/[^0-9]/g, '');
     this.editFormGroup.get('age_range')!.setValue(filteredValue, { emitEvent: false });
   }
 
   edit() {
-    let data = {...this.chooseElementService.criminal, ...this.editFormGroup.value}
+    let data = {...this.criminal, ...this.editFormGroup.value}
 
-    if(Object.keys(this.fieldsService.additionalFields).length) {
-      data.added_fields = this.fieldsService.additionalFields
+    if(Object.keys(this.additionalFields).length) {
+      data.added_fields = this.additionalFields
     } else {
       data.added_fields = null
     }
 
     this.fbiService.addEditedPost(data)
-    this.modalService.closeEditModal()
+    this.editDialogRef.close()
+  }
+
+  getAdditionalFields(additionalFields: any) {
+    this.additionalFields = additionalFields
   }
 }

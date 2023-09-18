@@ -1,6 +1,15 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnChanges, OnDestroy, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  OnChanges,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import {UserAuthService} from "./core/services/user-auth.service";
 import {Router} from "@angular/router";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-root',
@@ -8,7 +17,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./app.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit, OnChanges, OnDestroy {
+export class AppComponent implements OnInit, OnChanges {
   isAuth: boolean = false
 
   loginForm: any = {
@@ -19,12 +28,13 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     public authService: UserAuthService,
     private router: Router,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private destroyRef: DestroyRef
   ) {
   }
 
   ngOnInit() {
-    this.authService.userData$.subscribe(user => {
+    this.authService.userData$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(user => {
       if(user) {
         this.isAuth = true
         this.router.navigate(['/fbi'])
@@ -55,9 +65,5 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy {
         this.ref.markForCheck()
       }
     })
-  }
-
-  ngOnDestroy() {
-    // this.authService.isAuthStatus$.unsubscribe()
   }
 }

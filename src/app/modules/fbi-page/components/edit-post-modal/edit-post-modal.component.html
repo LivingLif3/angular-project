@@ -16,7 +16,7 @@
         <mat-form-field>
           <mat-label>Age</mat-label>
           <input matInput
-                 (input)="filterNumericInput($event)" placeholder="Last name, First name" formControlName="age_range"
+                 (ngModelChange)="filterNumericInput($event)" placeholder="Last name, First name" formControlName="age_range"
                  >
         </mat-form-field>
         <div>
@@ -103,19 +103,10 @@
     </form>
     <mat-step>
       <ng-template matStepLabel>Create new fields</ng-template>
-      <ng-container *ngFor="let element of fieldsService.additionalFields | keyvalue">
-        <app-added-field-info [fieldInfo]="element"
-                              [elementType]="element.value"
-                              [(name)]="additionalFieldInfo.key"
-                              [(value)]="additionalFieldInfo.value"
-                              [(type)]="additionalFieldInfo.type"
-        ></app-added-field-info>
-      </ng-container>
-      <app-add-field
-        [(name)]="additionalFieldInfo.key"
-        [(value)]="additionalFieldInfo.value"
-        [(type)]="additionalFieldInfo.type"
-      ></app-add-field>
+     <app-create-field
+       (additionalFieldsChange)="getAdditionalFields($event)"
+      [additionalFieldInfo]="additionalFieldInfo"
+     ></app-create-field>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Done</ng-template>

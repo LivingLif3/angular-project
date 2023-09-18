@@ -11,7 +11,10 @@ import {FormBuilder} from "@angular/forms";
 import {FbiService} from "../../../../core/services/fbi.service";
 import {ChooseElementService} from "../../../../core/services/choose-element.service";
 import {AdditionalFieldsService} from "../../../../core/services/additional-fields.service";
-import {finalize, map, mergeMap, switchMap, take, tap} from "rxjs";
+import {finalize, forkJoin, map, mergeMap, switchMap, take, tap} from "rxjs";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {MatDialogRef} from "@angular/material/dialog";
+import {EditPostModalComponent} from "../edit-post-modal/edit-post-modal.component";
 
 @Component({
   selector: 'app-original-posts-page',
@@ -19,7 +22,7 @@ import {finalize, map, mergeMap, switchMap, take, tap} from "rxjs";
   styleUrls: ['./original-posts-page.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OriginalPostsPageComponent implements OnInit, OnDestroy {
+export class OriginalPostsPageComponent implements OnInit {
 
   loading: boolean = false
   showAdditionalInfo: boolean = false
@@ -50,18 +53,16 @@ export class OriginalPostsPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loading = true
 
-    this.fbiService.getEditedPosts().pipe(
-      tap((editedPosts: any) => {
-        this.fbiService.editedPosts = editedPosts
-      }),
-      switchMap(() => this.fbiService.getPeople())
-    ).subscribe((criminals: any) => {
-        this.showedCriminals = criminals.items
-        this.fbiService.criminals = criminals.items
+    forkJoin({
+      editedPosts: this.fbiService.getEditedPosts(0,4).pipe(take(1)),
+      people: this.fbiService.getPeople()
+    }).subscribe(({editedPosts, people}) => {
+      this.showedCriminals = people.items
+      this.fbiService.criminals = people.items
 
-        this.length = criminals.total
-        this.loading = false
-        this.ref.markForCheck()
+      this.length = people.total
+      this.loading = false
+      this.ref.markForCheck()
     })
 
     this.chooseElementService.criminalData$.subscribe(criminal => {
@@ -77,22 +78,11 @@ export class OriginalPostsPageComponent implements OnInit, OnDestroy {
     this.showAdditionalInfo = false
   }
 
-  // Additional info methods
-
-  choose() {
-    this.chooseElementService.chooseElement(this.chosenCriminal)
-    this.ref.markForCheck()
-  }
-
-  onCardChange(criminal: any): void {
-    this.chosenCriminal = criminal
-  }
-
   // Paginator methods
 
   onPaginateChange(event: any) {
     this.loading = true
-    this.fbiService.getPeopleByPage(event.pageIndex + 1).subscribe((newCriminals: any) => {
+    this.getPeopleByPage(event.pageIndex).subscribe((newCriminals: any) => {
       this.fbiService.criminals = newCriminals.items
       this.showedCriminals = newCriminals.items
       this.loading = false
@@ -100,8 +90,8 @@ export class OriginalPostsPageComponent implements OnInit, OnDestroy {
     })
   }
 
-  ngOnDestroy() {
-    this.chooseElementService.criminalData$.unsubscribe()
+  getPeopleByPage(pageIndex: number = 0) {
+    return this.fbiService.getPeopleByPage(pageIndex + 1)
   }
 
 }

@@ -8,24 +8,22 @@ export class AdditionalFieldsService {
 
   id: number = 0
 
-  additionalFields: any = {}
-
-  addField(field: IField, type: string) {
-    this.additionalFields = {
-      ...this.additionalFields, [field.name]: {
+  addField(additionalFields: any, field: IField, type: string) {
+    return {
+      ...additionalFields, [field.name]: {
         value: field.value,
         type
       }
     }
   }
 
-  removeField(name: string) {
-    let {[name]: nameOfField, ...otherObj} = this.additionalFields
-    this.additionalFields = otherObj
+  removeField(additionalFields: any, name: string) {
+    let {[name]: nameOfField, ...otherObj} = additionalFields
+    return otherObj
   }
 
   clearFields() {
-    this.additionalFields = {}
+    return {}
   }
 
 }

@@ -6,7 +6,7 @@
   </mat-card-header>
   <mat-card-header class="header-info">
     <mat-card-title>{{infoCard.title}}</mat-card-title>
-    <button mat-button (click)="onEdit()" [ngStyle]="{'display': edit ? 'none' : 'block'}">edit</button>
+    <button mat-button (click)="onEdit()" *ngIf="!edit">edit</button>
   </mat-card-header>
   <img mat-card-image src="{{infoCard.images[0].original}}" alt="no photo">
   <mat-card-content>

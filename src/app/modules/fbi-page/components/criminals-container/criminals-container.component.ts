@@ -12,16 +12,4 @@ export class CriminalsContainerComponent {
   @Input() criminals!: any
   @Input() edit: boolean = false
 
-  @Output() onChoose = new EventEmitter()
-  @Output() infoCardChange = new EventEmitter()
-
-  choose() {
-    this.onChoose.emit()
-  }
-
-  onChangeCard(criminal: any) {
-    this.infoCardChange.emit(criminal)
-  }
-
-
 }

@@ -13,19 +13,15 @@
       <mat-spinner></mat-spinner>
     </ng-template>
     <app-criminals-container
-      [criminals]="editedPosts"
+      [criminals]="showedEditedPosts"
       [loading]="loading"
       [edit]="true"
-      (onChoose)="choose()"
-      (infoCardChange)="onCardChange($event)"
     ></app-criminals-container>
   </div>
-  <ng-container *ngIf="showAdditionalInfo">
-    <app-criminal-info
-      [info]="editedCriminal"></app-criminal-info>
-  </ng-container>
+  <app-criminal-info *ngIf="showAdditionalInfo"
+                     [info]="editedCriminal">
+  </app-criminal-info>
 </div>
-<!--total / items.perPage-->
 <div class="paginator">
   <mat-paginator [length]="length"
                  [pageSize]="itemsPerPage"

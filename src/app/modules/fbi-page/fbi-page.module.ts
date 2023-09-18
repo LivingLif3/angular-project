@@ -31,6 +31,8 @@ import { CriminalsContainerComponent } from './components/criminals-container/cr
 import { EditedPostPageComponent } from './components/edited-post-page/edited-post-page.component';
 import { OriginalPostsPageComponent } from './components/original-posts-page/original-posts-page.component';
 import { EditPostModalComponent } from './components/edit-post-modal/edit-post-modal.component';
+import { InfoFieldComponent } from './components/info-field/info-field.component';
+import { CreateFieldComponent } from './components/create-field/create-field.component';
 
 const routes: Routes = [
   {
@@ -61,7 +63,9 @@ const routes: Routes = [
     CriminalsContainerComponent,
     EditedPostPageComponent,
     OriginalPostsPageComponent,
-    EditPostModalComponent
+    EditPostModalComponent,
+    InfoFieldComponent,
+    CreateFieldComponent
   ],
   imports: [
     CommonModule,

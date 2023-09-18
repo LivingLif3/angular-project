@@ -7,31 +7,10 @@
       <img src="{{image.original}}" />
     </ng-container>
   </div>
-  <div class="field">
-    <span class="field-name">Age</span>: {{info.age_range | defaultValue }}
-  </div>
-  <div class="field">
-    <span class="field-name">Sex</span>: {{info.sex | defaultValue}}
-  </div>
-  <div class="field">
-    <span class="field-name">Weight</span>: {{info.weight | defaultValue}}
-  </div>
-  <div class="field">
-    <span class="field-name">Race</span>: {{info.race_raw | defaultValue}}
-  </div>
-  <div class="field">
-    <span class="field-name">Nationality</span>: {{info.nationality | defaultValue}}
-  </div>
-  <div class="field">
-    <span class="field-name">Hair</span>: {{info.hair_raw | defaultValue}}
-  </div>
-  <div class="field">
-    <span class="field-name">Eyes</span>: {{info.eyes | defaultValue}}
-  </div>
-  <div class="field">
-    <span class="field-name">Reward</span>: {{info.reward_text | defaultValue}}
-  </div>
-  <div class="field">
-    <span class="field-name">Description</span>: {{info.description | defaultValue}}
-  </div>
+  <ng-container *ngFor="let item of fields | keyvalue">
+    <app-info-field
+      [key]="item.key"
+      [value]="item.value"
+    ></app-info-field>
+  </ng-container>
 </div>

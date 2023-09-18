@@ -47,8 +47,7 @@ let routes: Routes = [
 function initializeApplication(authService: UserAuthService, fbiService: FbiService, chooseElementService: ChooseElementService, router: Router) {
   return () => authService.checkAuth().pipe(
     mergeMap((user) => {
-      console.log(user, "MULTIFACTOR")
-      if (user.multiFactor.user) {
+      if (user?.multiFactor.user) {
         let userDataTemp: any = user.multiFactor.user
         localStorage.setItem('user', JSON.stringify(userDataTemp))
         JSON.parse(localStorage.getItem('user')!)
@@ -64,7 +63,7 @@ function initializeApplication(authService: UserAuthService, fbiService: FbiServ
     }),
     tap(criminals => fbiService.criminals = criminals)
   ).subscribe((criminals) => {
-    chooseElementService.chooseElement(criminals.items[0])
+    chooseElementService.criminalData$.next(criminals.items[0])
   })
 }
 
