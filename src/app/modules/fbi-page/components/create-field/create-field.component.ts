@@ -15,7 +15,8 @@ export class CreateFieldComponent {
 
   @Output() additionalFieldsChange = new EventEmitter()
 
-  addFieldEvent() {
+  addFieldEvent(additionalFields: any) {
+    this.additionalFields = additionalFields
     this.additionalFieldsChange.emit(this.additionalFields)
   }
 

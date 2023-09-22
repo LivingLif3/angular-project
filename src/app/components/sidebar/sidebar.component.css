@@ -3,6 +3,11 @@
   background: linear-gradient(to bottom, #2C4A52, #537072, #2C4A52);
   position: relative;
   transition: 0.4s;
+  width: 19rem;
+}
+
+.collapsed {
+  width: 5rem;
 }
 
 .collapsedBtn {

@@ -28,8 +28,6 @@ export class AddFieldComponent {
   @Input() additionalFieldInfo!: any
   @Output() additionalFieldInfoChange = new EventEmitter()
 
-  @Output() addFieldEvent = new EventEmitter()
-
   @Input() additionalFields: any
   @Output() additionalFieldsChange = new EventEmitter()
 
@@ -63,8 +61,6 @@ export class AddFieldComponent {
           },
           this.additionalFieldInfo.type)
       )
-
-      this.addFieldEvent.emit()
 
       this.additionalFieldInfoChange.emit({
         key: "",

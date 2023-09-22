@@ -1,13 +1,11 @@
 <ng-container *ngFor="let element of additionalFields | keyvalue">
   <app-added-field-info [fieldInfo]="element"
-                        [additionalFields]="additionalFields"
-                        [elementType]="element.value"
                         [(additionalFields)]="additionalFields"
                         [(additionalFieldInfo)]="additionalFieldInfo"
   ></app-added-field-info>
 </ng-container>
 <app-add-field
-  (addFieldEvent)="addFieldEvent()"
-  [(additionalFields)]="additionalFields"
+  [additionalFields]="additionalFields"
+  (additionalFieldsChange)="addFieldEvent($event)"
   [(additionalFieldInfo)]="additionalFieldInfo"
 ></app-add-field>

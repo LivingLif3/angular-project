@@ -1,7 +1,8 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnDestroy, OnInit} from '@angular/core';
 import {FbiService} from "../../../../core/services/fbi.service";
 import {ChooseElementService} from "../../../../core/services/choose-element.service";
 import {first, take} from "rxjs";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-edited-post-page',
@@ -30,6 +31,7 @@ export class EditedPostPageComponent implements OnInit {
     public fbiService: FbiService,
     private ref: ChangeDetectorRef,
     private chooseElementService: ChooseElementService,
+    private destroyRef: DestroyRef
   ) {
   }
 
@@ -38,7 +40,9 @@ export class EditedPostPageComponent implements OnInit {
 
     this.loading = true
 
-    this.chooseElementService.editedCriminalData$.subscribe(editedCriminal => {
+    this.chooseElementService.editedCriminalData$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(editedCriminal => {
       console.log()
       this.editedCriminal = editedCriminal
     })

@@ -27,12 +27,8 @@ export class HeaderComponent implements OnInit{
 
   ngOnInit() {
     this.authService.userData$.subscribe((user) => {
-      if(user) {
-        this.isAuth = true
-        this.ref.markForCheck()
-      } else {
-        this.isAuth = false
-      }
+      this.isAuth = Boolean(user)
+      this.ref.markForCheck()
     })
   }
 

@@ -25,14 +25,19 @@ export class AuthModalComponent {
   ) {
   }
 
-  signIn() { // Изменить
-    this.authService.signIn(this.authForm.get('email')?.value, this.authForm.get('password')?.value).subscribe(
+  signIn() {
+    this.getUserData().subscribe(
       (user: any) => {
         if (user) {
           this.dialog.close()
           this.ref.markForCheck()
         }
       })
+  }
+
+
+  getUserData() {
+    return this.authService.signIn(this.authForm.get('email')?.value, this.authForm.get('password')?.value)
   }
 
 }

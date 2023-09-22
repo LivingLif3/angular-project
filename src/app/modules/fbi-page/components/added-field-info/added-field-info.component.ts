@@ -18,7 +18,6 @@ export class AddedFieldInfoComponent {
   @Output() additionalFieldsChange = new EventEmitter()
 
   @Input() fieldInfo!: any
-  @Input() elementType!: any
 
   constructor(
     public additionalService: AdditionalFieldsService
