@@ -26,7 +26,7 @@
 .criminals-wrapper {
   display: flex;
   justify-content: center;
-  height: calc(100vh - 50px - 140px - 50px);
+  height: calc(100vh - 15rem);
   overflow-y: auto;
   flex-wrap: wrap;
   margin-top: 20px;

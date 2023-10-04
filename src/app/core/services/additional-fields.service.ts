@@ -9,6 +9,7 @@ export class AdditionalFieldsService {
   id: number = 0
 
   addField(additionalFields: any, field: IField, type: string) {
+    console.log(additionalFields, field, type, "DSADASD")
     return {
       ...additionalFields, [field.name]: {
         value: field.value,

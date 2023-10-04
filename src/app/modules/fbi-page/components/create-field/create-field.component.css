@@ -1,0 +1,13 @@
+.add-button-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  align-items: center;
+}
+
+.add-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

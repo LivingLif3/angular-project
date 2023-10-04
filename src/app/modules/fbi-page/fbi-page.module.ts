@@ -33,6 +33,10 @@ import { OriginalPostsPageComponent } from './components/original-posts-page/ori
 import { EditPostModalComponent } from './components/edit-post-modal/edit-post-modal.component';
 import { InfoFieldComponent } from './components/info-field/info-field.component';
 import { CreateFieldComponent } from './components/create-field/create-field.component';
+import { AddingFormComponent } from './components/adding-form/adding-form.component';
+import { EditFieldComponent } from './components/edit-field/edit-field.component';
+import { EditPostModalOriginalContainerComponent } from './components/edit-post-modal-original-container/edit-post-modal-original-container.component';
+import { EditPostModalEditedContainerComponent } from './components/edit-post-modal-edited-container/edit-post-modal-edited-container.component';
 
 const routes: Routes = [
   {
@@ -65,7 +69,11 @@ const routes: Routes = [
     OriginalPostsPageComponent,
     EditPostModalComponent,
     InfoFieldComponent,
-    CreateFieldComponent
+    CreateFieldComponent,
+    AddingFormComponent,
+    EditFieldComponent,
+    EditPostModalOriginalContainerComponent,
+    EditPostModalEditedContainerComponent
   ],
   imports: [
     CommonModule,

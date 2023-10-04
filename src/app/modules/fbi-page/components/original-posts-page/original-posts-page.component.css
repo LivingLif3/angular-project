@@ -1,3 +1,6 @@
+
+
+
 .header {
   padding: 0;
   height: 50px;
@@ -42,14 +45,6 @@
   padding: 0px;
 }
 
-.criminals {
-  width: 44rem;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin-top: 20px;
-}
-
 .link {
   text-decoration: none;
   color: #2C4A52;
@@ -64,10 +59,4 @@
 
 .link:hover {
   color: #537072;
-}
-
-@media (max-width: 1000px) {
-  .criminals {
-    width: 450px;
-  }
 }

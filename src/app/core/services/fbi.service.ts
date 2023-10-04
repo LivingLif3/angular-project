@@ -1,18 +1,13 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {BehaviorSubject, from, map, Observable} from "rxjs";
+import {BehaviorSubject, from, map, mergeMap, Observable} from "rxjs";
 import {
   addDoc,
-  collection,
+  collection, collectionChanges,
   collectionData,
   doc,
   Firestore,
-  getDocs,
-  query,
-  updateDoc,
-  where
 } from "@angular/fire/firestore";
-import {DatabaseReference} from "@angular/fire/compat/database/interfaces";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 
 @Injectable({
@@ -54,6 +49,18 @@ export class FbiService {
       console.log(this.editedPosts)
       return editedPosts.slice(pageIndex * itemsPerPage, (pageIndex + 1) * itemsPerPage)
     }))
+  }
+
+  updateAddedFields(id: string, data: any): Observable<any> {
+    return collectionData(collection(this.firestore, 'posts'), { idField: 'id'})
+      .pipe(
+        map(elements => elements.find(element => element['@id'] === id)),
+        map(element => element?.['id']),
+        mergeMap((elementId: string) => {
+          return from(this.db.collection('posts').doc(elementId).update(data))
+        })
+      )
+
   }
 
   getEditPostById(id: string) {

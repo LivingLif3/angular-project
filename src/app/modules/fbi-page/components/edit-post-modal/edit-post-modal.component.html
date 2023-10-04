@@ -104,8 +104,8 @@
     <mat-step>
       <ng-template matStepLabel>Create new fields</ng-template>
      <app-create-field
+       [criminalInfo]="initialValue"
        (additionalFieldsChange)="getAdditionalFields($event)"
-      [additionalFieldInfo]="additionalFieldInfo"
      ></app-create-field>
     </mat-step>
     <mat-step>

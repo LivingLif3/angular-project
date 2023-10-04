@@ -20,16 +20,14 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
   styleUrls: ['./edit-post-modal.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditPostModalComponent implements OnInit{
+export class EditPostModalComponent implements OnInit {
 
-  criminal: any
+  @Input() initialValue!:any
+
+  @Output() onEdit = new EventEmitter<any>()
+
+  // criminal: any
   additionalFields: any = {}
-
-  additionalFieldInfo = {
-    key: "",
-    value: "",
-    type: "string"
-  }
 
   editFormGroup: FormGroup = this.fb.group({
     title: [''],
@@ -45,19 +43,12 @@ export class EditPostModalComponent implements OnInit{
   })
 
   constructor(
-    private fb: FormBuilder,
-    private chooseElementService: ChooseElementService,
-    private fbiService: FbiService,
-    private editDialogRef: MatDialogRef<EditPostModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    private fb: FormBuilder
   ) {
   }
 
   ngOnInit() {
-    this.chooseElementService.criminalData$.subscribe(criminal => {
-      this.criminal = criminal
-    })
-    this.editFormGroup.patchValue(this.data.criminal)
+    this.editFormGroup.patchValue(this.initialValue)
   }
 
   // Нужно здесь заэмитить значение на false
@@ -67,16 +58,10 @@ export class EditPostModalComponent implements OnInit{
   }
 
   edit() {
-    let data = {...this.criminal, ...this.editFormGroup.value}
-
-    if(Object.keys(this.additionalFields).length) {
-      data.added_fields = this.additionalFields
-    } else {
-      data.added_fields = null
-    }
-
-    this.fbiService.addEditedPost(data)
-    this.editDialogRef.close()
+    this.onEdit.emit([
+      this.editFormGroup.value,
+      this.additionalFields
+    ])
   }
 
   getAdditionalFields(additionalFields: any) {

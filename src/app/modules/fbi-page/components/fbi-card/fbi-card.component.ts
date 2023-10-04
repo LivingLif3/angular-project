@@ -13,6 +13,12 @@ import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {EditPostModalComponent} from "../edit-post-modal/edit-post-modal.component";
 import {first} from "rxjs";
 import {ChooseElementService} from "../../../../core/services/choose-element.service";
+import {
+  EditPostModalOriginalContainerComponent
+} from "../edit-post-modal-original-container/edit-post-modal-original-container.component";
+import {
+  EditPostModalEditedContainerComponent
+} from "../edit-post-modal-edited-container/edit-post-modal-edited-container.component";
 
 @Component({
   selector: 'app-fbi-card',
@@ -22,18 +28,14 @@ import {ChooseElementService} from "../../../../core/services/choose-element.ser
 })
 export class FbiCardComponent implements OnInit {
 
-  editDialogRef!: MatDialogRef<EditPostModalComponent>
+  editDialogRef!: MatDialogRef<EditPostModalOriginalContainerComponent | EditPostModalEditedContainerComponent>
 
   @Input() infoCard: any = {}
-  @Output() infoCardChange = new EventEmitter()
 
-  @Input() editStatus?: boolean | undefined = false
+  editStatus?: boolean | undefined = false
   @Input() index!: number;
 
   @Input() edit!: boolean
-  // New fields after refactoring
-  @Output() clickEdit = new EventEmitter()
-  @Output() onChoose = new EventEmitter()
 
   constructor(
     private additionalService: AdditionalFieldsService,
@@ -45,14 +47,6 @@ export class FbiCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    // if (!this.edit) {
-    //   let index = this.fbiService.editedPosts.findIndex((criminal: any) => criminal['@id'] === this.infoCard['@id'])
-    //   if (index !== -1) {
-    //     this.editStatus = true
-    //     // this.ref.markForCheck()
-    //   }
-    // }
-
     if(!this.edit) {
       this.fbiService.getEditPostById(this.infoCard['@id']).pipe(first()).subscribe((postInfo: any) => {
         if(postInfo) {
@@ -77,10 +71,18 @@ export class FbiCardComponent implements OnInit {
   onEdit() {
     this.choose()
     this.additionalService.clearFields()
-    this.editDialogRef = this.dialog.open(EditPostModalComponent, {
-      data: {
-        criminal: this.infoCard
-      }
-    })
+    if(!this.edit) {
+      this.editDialogRef = this.dialog.open(EditPostModalOriginalContainerComponent, {
+        data: {
+          criminal: this.infoCard
+        }
+      })
+    } else {
+      this.editDialogRef = this.dialog.open(EditPostModalEditedContainerComponent, {
+        data: {
+          criminal: this.infoCard
+        }
+      })
+    }
   }
 }

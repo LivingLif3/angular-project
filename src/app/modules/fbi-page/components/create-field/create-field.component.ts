@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IAdditionalFieldsInfo} from "../../../../core/interfaces/additional-fileds";
 
 @Component({
@@ -7,17 +7,22 @@ import {IAdditionalFieldsInfo} from "../../../../core/interfaces/additional-file
   styleUrls: ['./create-field.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CreateFieldComponent {
+export class CreateFieldComponent implements OnInit{
 
+  addStatusForm: boolean = false
   additionalFields = {}
 
-  @Input() additionalFieldInfo!: IAdditionalFieldsInfo
-
+  @Input() criminalInfo!: any
   @Output() additionalFieldsChange = new EventEmitter()
+
+  ngOnInit() {
+    this.additionalFields = {...this.additionalFields, ...this.criminalInfo?.added_fields}
+  }
 
   addFieldEvent(additionalFields: any) {
     this.additionalFields = additionalFields
     this.additionalFieldsChange.emit(this.additionalFields)
+    this.addStatusForm = false
   }
 
 }
