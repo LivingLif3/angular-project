@@ -1,7 +1,9 @@
-import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, DestroyRef, Inject} from '@angular/core';
 import {ChooseElementService} from "../../../../core/services/choose-element.service";
 import {FbiService} from "../../../../core/services/fbi.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {ICriminalInfo} from "../../../../core/interfaces/criminal-info";
 
 @Component({
   selector: 'app-edit-post-modal-edited-container',
@@ -11,8 +13,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 })
 export class EditPostModalEditedContainerComponent {
 
-  criminal: any
-
   constructor(
     private chooseElementService: ChooseElementService,
     private fbiService: FbiService,
@@ -21,17 +21,8 @@ export class EditPostModalEditedContainerComponent {
   ) {
   }
 
-  ngOnInit() {
-    this.chooseElementService.editedCriminalData$.subscribe(criminal => {
-      this.criminal = criminal
-    })
-  }
-
-  edit(editedDataArray: any) {
-
-    console.log(this.criminal)
-
-    let data = {...this.criminal, ...editedDataArray[0], added_fields: editedDataArray[1] ? editedDataArray[1] : null}
+  edit(editedDataArray: ICriminalInfo[]) {
+    let data = {...this.data.criminal, ...editedDataArray[0], added_fields: editedDataArray[1] || null}
 
     this.fbiService.updateAddedFields(data['@id'], data).subscribe();
     this.editDialogRef.close()

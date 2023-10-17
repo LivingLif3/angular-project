@@ -9,6 +9,7 @@ import {
   Output
 } from '@angular/core';
 import {AdditionalFieldsService} from "../../../../core/services/additional-fields.service";
+import {IAdditionalFields, IAdditionalFieldsInfo} from "../../../../core/interfaces/additional-fileds";
 
 @Component({
   selector: 'app-added-field-info',
@@ -16,28 +17,25 @@ import {AdditionalFieldsService} from "../../../../core/services/additional-fiel
   styleUrls: ['./added-field-info.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddedFieldInfoComponent implements OnInit {
+export class AddedFieldInfoComponent {
 
   color: string = '#32CD32'
 
   editStatus: boolean = false
 
-  @Input() additionalFields: any
-  @Output() additionalFieldsChange = new EventEmitter()
+  // @Input() additionalFields: any
+  // @Output() additionalFieldsChange = new EventEmitter()
+  @Output() onAdd = new EventEmitter()
+  @Output() onDelete = new EventEmitter()
 
   @Input() fieldInfo!: any
 
-  constructor(
-    public additionalService: AdditionalFieldsService
-  ) {
+  onAddField(value: IAdditionalFieldsInfo) {
+    this.onAdd.emit(value)
   }
 
-  ngOnInit() {
-    console.log(this.fieldInfo)
-  }
-
-  onDelete() {
-    this.additionalFieldsChange.emit(this.additionalService.removeField(this.additionalFields, this.fieldInfo.key))
+  onDeleteField() {
+    this.onDelete.emit()
   }
 
   onEdit() {

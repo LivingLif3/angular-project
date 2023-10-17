@@ -5,7 +5,8 @@
 <!--</ng-container>-->
 <ng-container *ngFor="let element of additionalFields | keyvalue">
   <app-added-field-info [fieldInfo]="element"
-                        [(additionalFields)]="additionalFields"
+                        (onAdd)="addFieldEvent($event)"
+                        (onDelete)="deleteFieldEvent(element)"
   ></app-added-field-info>
 </ng-container>
 <div *ngIf="!addStatusForm; else addField" class="add-button-wrapper" (click)="addStatusForm = true">
@@ -17,7 +18,7 @@
 <ng-template #addField>
   <app-add-field
     [additionalFields]="additionalFields"
-    (additionalFieldsChange)="addFieldEvent($event)"
+    (onAdd)="addFieldEvent($event)"
   ></app-add-field>
 </ng-template>
 

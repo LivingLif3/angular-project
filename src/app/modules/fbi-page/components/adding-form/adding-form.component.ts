@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, ValidationErrors, Validators} from "@angular/forms";
+import {MatSelectChange} from "@angular/material/select";
 
 @Component({
   selector: 'app-adding-form',
@@ -8,6 +9,7 @@ import {FormBuilder, FormGroup} from "@angular/forms";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddingFormComponent implements OnInit {
+
   types: string[] = [
     "string",
     "number",
@@ -15,7 +17,7 @@ export class AddingFormComponent implements OnInit {
     "date"
   ]
 
-  defaultValues: any = {
+  defaultValues: Record<string, string | number | boolean> = {
     string: "",
     number: 0,
     boolean: false,
@@ -23,13 +25,14 @@ export class AddingFormComponent implements OnInit {
   }
 
   addFieldForm: FormGroup = this.fb.group({
-    key: [''],
-    value: [''],
+    key: ['', Validators.required],
+    value: ['', Validators.required],
     type: ['string']
   })
 
   @Input() initialValue?: any
   @Output() addFieldEvent = new EventEmitter<typeof this.addFieldForm.value>()
+  @Output() onAdd = new EventEmitter()
 
   constructor(
     private fb: FormBuilder
@@ -46,21 +49,14 @@ export class AddingFormComponent implements OnInit {
     }
   }
 
-  changeSelect() {
+  changeSelect(select: MatSelectChange) {
     this.addFieldForm.patchValue({
-      value: this.defaultValues[this.addFieldForm.get('type')!.value],
+      value: this.defaultValues[select.value],
     })
   }
 
   addField() {
-    if(Boolean(this.addFieldForm.get('value')!.value) && Boolean(this.addFieldForm.get('key')!.value) && this.addFieldForm.get('type')!.value !== 'boolean') {
-      this.addFieldEvent.emit(this.addFieldForm.value)
-      this.addFieldForm.patchValue({
-        key: "",
-        value: "",
-        type: "string"
-      })
-    } else if(this.addFieldForm.get('type')!.value === 'boolean' && Boolean(this.addFieldForm.get('key')!.value)) {
+    if(!this.addFieldForm.invalid) {
       this.addFieldEvent.emit(this.addFieldForm.value)
       this.addFieldForm.patchValue({
         key: "",

@@ -1,4 +1,5 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
+import {ICriminalInfo} from "../../../../core/interfaces/criminal-info";
 
 @Component({
   selector: 'app-criminals-container',
@@ -9,7 +10,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@
 export class CriminalsContainerComponent {
 
   @Input() loading: boolean = false
-  @Input() criminals!: any
+  @Input() criminals!: Partial<ICriminalInfo>[]
   @Input() edit: boolean = false
 
 }

@@ -1,7 +1,7 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
+  Component, DestroyRef,
   ElementRef,
   OnDestroy,
   OnInit,
@@ -15,6 +15,7 @@ import {finalize, forkJoin, map, mergeMap, switchMap, take, tap} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {MatDialogRef} from "@angular/material/dialog";
 import {EditPostModalComponent} from "../edit-post-modal/edit-post-modal.component";
+import {ICriminalInfo} from "../../../../core/interfaces/criminal-info";
 
 @Component({
   selector: 'app-original-posts-page',
@@ -32,7 +33,7 @@ export class OriginalPostsPageComponent implements OnInit {
   @ViewChild('paginator', {read: ElementRef})
   paginator!: ElementRef
 
-  showedCriminals: any = []
+  showedCriminals: ICriminalInfo[] = []
 
   length: number = 0
   pageIndex: number = 0
@@ -40,13 +41,14 @@ export class OriginalPostsPageComponent implements OnInit {
 
   // Additional information fields
 
-  chosenCriminal: any = this.fbiService.criminals[0]
+  chosenCriminal: ICriminalInfo = this.fbiService.criminals[0]
 
   constructor(
     public fbiService: FbiService,
     private fb: FormBuilder,
     private ref: ChangeDetectorRef,
-    private chooseElementService: ChooseElementService
+    private chooseElementService: ChooseElementService,
+    private destroyRef: DestroyRef
   ) {
   }
 
@@ -65,7 +67,9 @@ export class OriginalPostsPageComponent implements OnInit {
       this.ref.markForCheck()
     })
 
-    this.chooseElementService.criminalData$.subscribe(criminal => {
+    this.chooseElementService.criminalData$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(criminal => {
       this.chosenCriminal = criminal
     })
   }
@@ -82,7 +86,9 @@ export class OriginalPostsPageComponent implements OnInit {
 
   onPaginateChange(event: any) {
     this.loading = true
-    this.getPeopleByPage(event.pageIndex).subscribe((newCriminals: any) => {
+    this.getPeopleByPage(event.pageIndex).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe((newCriminals: any) => {
       this.fbiService.criminals = newCriminals.items
       this.showedCriminals = newCriminals.items
       this.loading = false

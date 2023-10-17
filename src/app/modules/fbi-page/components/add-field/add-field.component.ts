@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AdditionalFieldsService} from "../../../../core/services/additional-fields.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
+import {IAdditionalFields, IAdditionalFieldsInfo} from "../../../../core/interfaces/additional-fileds";
 
 @Component({
   selector: 'app-add-field',
@@ -9,23 +10,12 @@ import {FormBuilder, FormGroup} from "@angular/forms";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddFieldComponent {
-  @Input() additionalFields: any
-  @Output() additionalFieldsChange = new EventEmitter()
+  @Input() additionalFields!: IAdditionalFields
 
-  constructor(
-    public fieldsService: AdditionalFieldsService
-  ) {
-  }
+  @Output() onAdd = new EventEmitter()
 
-  addField(value: any) {
-    console.log(value, "TEST ADD FIELD")
-    this.additionalFieldsChange.emit(
-      this.fieldsService.addField(this.additionalFields, {
-          name: value.key,
-          value: value.value
-        },
-        value.type)
-    )
+  addField(value: IAdditionalFieldsInfo) {
+    this.onAdd.emit(value)
   }
 
 }

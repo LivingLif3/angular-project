@@ -4,13 +4,19 @@
   </div>
   <div class="images">
     <ng-container *ngFor="let image of info.images">
-      <img src="{{image.original}}" />
+      <img src="{{image.original}}"/>
     </ng-container>
   </div>
   <ng-container *ngFor="let item of fields | keyvalue">
     <app-info-field
       [key]="item.key"
       [value]="item.value"
+    ></app-info-field>
+  </ng-container>
+  <ng-container *ngFor="let item of info.added_fields | keyvalue">
+    <app-info-field
+      [key]="item.key"
+      [value]="item.value.value"
     ></app-info-field>
   </ng-container>
 </div>

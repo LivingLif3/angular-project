@@ -32,7 +32,7 @@
     </ng-container>
     <mat-form-field>
       <mat-label>Choose type</mat-label>
-      <mat-select formControlName="type" (selectionChange)="changeSelect()">
+      <mat-select formControlName="type" (selectionChange)="changeSelect($event)">
         <mat-option *ngFor="let type of types" [value]="type">
           {{type}}
         </mat-option>

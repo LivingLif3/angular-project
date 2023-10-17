@@ -4,7 +4,6 @@ import {
   Component,
   DestroyRef,
   OnChanges,
-  OnDestroy,
   OnInit
 } from '@angular/core';
 import {UserAuthService} from "./core/services/user-auth.service";

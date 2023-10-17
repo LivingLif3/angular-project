@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {IAdditionalFieldsInfo} from "../../../../core/interfaces/additional-fileds";
+import {IAdditionalFields, IAdditionalFieldsInfo} from "../../../../core/interfaces/additional-fileds";
+import {ICriminalInfo} from "../../../../core/interfaces/criminal-info";
 
 @Component({
   selector: 'app-create-field',
@@ -10,19 +11,27 @@ import {IAdditionalFieldsInfo} from "../../../../core/interfaces/additional-file
 export class CreateFieldComponent implements OnInit{
 
   addStatusForm: boolean = false
-  additionalFields = {}
 
-  @Input() criminalInfo!: any
-  @Output() additionalFieldsChange = new EventEmitter()
+
+  @Input() criminalInfo!: Partial<ICriminalInfo>
+  @Input() additionalFields!: IAdditionalFields
+  // @Output() additionalFieldsChange = new EventEmitter()
+
+  @Output() onAdd = new EventEmitter()
+  @Output() onDelete = new EventEmitter()
 
   ngOnInit() {
     this.additionalFields = {...this.additionalFields, ...this.criminalInfo?.added_fields}
   }
 
-  addFieldEvent(additionalFields: any) {
-    this.additionalFields = additionalFields
-    this.additionalFieldsChange.emit(this.additionalFields)
+  addFieldEvent(value: IAdditionalFieldsInfo) {
+    this.onAdd.emit(value)
     this.addStatusForm = false
+  }
+
+  deleteFieldEvent(element: any) {
+    console.log(element)
+    this.onDelete.emit(element)
   }
 
 }

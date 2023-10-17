@@ -13,6 +13,12 @@ import {AdditionalFieldsService} from "../../../../core/services/additional-fiel
 import {ChooseElementService} from "../../../../core/services/choose-element.service";
 import {FbiService} from "../../../../core/services/fbi.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {ICriminalInfo} from "../../../../core/interfaces/criminal-info";
+import {
+  IAdditionalFields,
+  IAdditionalFieldsFull,
+  IAdditionalFieldsInfo
+} from "../../../../core/interfaces/additional-fileds";
 
 @Component({
   selector: 'app-edit-post-modal',
@@ -22,9 +28,9 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 })
 export class EditPostModalComponent implements OnInit {
 
-  @Input() initialValue!:any
+  @Input() initialValue!: Partial<ICriminalInfo>
 
-  @Output() onEdit = new EventEmitter<any>()
+  @Output() onEdit = new EventEmitter()
 
   // criminal: any
   additionalFields: any = {}
@@ -43,7 +49,8 @@ export class EditPostModalComponent implements OnInit {
   })
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private fieldsService: AdditionalFieldsService
   ) {
   }
 
@@ -52,7 +59,7 @@ export class EditPostModalComponent implements OnInit {
   }
 
   // Нужно здесь заэмитить значение на false
-  filterNumericInput(value: any) {
+  filterNumericInput(value: string) {
     const filteredValue = value.replace(/[^0-9]/g, '');
     this.editFormGroup.get('age_range')!.setValue(filteredValue, { emitEvent: false });
   }
@@ -64,7 +71,14 @@ export class EditPostModalComponent implements OnInit {
     ])
   }
 
-  getAdditionalFields(additionalFields: any) {
-    this.additionalFields = additionalFields
+  getAdditionalFields(value: IAdditionalFieldsInfo) {
+    this.additionalFields = this.fieldsService.addField(this.additionalFields, {
+      name: value.key,
+      value: value.value
+    }, value.type)
+  }
+
+  deleteField(element: IAdditionalFields) {
+    this.additionalFields = this.fieldsService.removeField(this.additionalFields, element.key)
   }
 }

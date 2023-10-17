@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Injectabl
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {UserAuthService} from "../../core/services/user-auth.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {IUser} from "../../core/interfaces/IUser";
 
 @Component({
   selector: 'app-auth-modal',
@@ -27,7 +28,7 @@ export class AuthModalComponent {
 
   signIn() {
     this.getUserData().subscribe(
-      (user: any) => {
+      (user: IUser) => {
         if (user) {
           this.dialog.close()
           this.ref.markForCheck()

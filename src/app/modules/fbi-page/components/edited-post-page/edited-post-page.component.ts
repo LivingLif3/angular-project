@@ -1,8 +1,9 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnDestroy, OnInit} from '@angular/core';
 import {FbiService} from "../../../../core/services/fbi.service";
 import {ChooseElementService} from "../../../../core/services/choose-element.service";
-import {first, take} from "rxjs";
+import {first} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {ICriminalInfo} from "../../../../core/interfaces/criminal-info";
 
 @Component({
   selector: 'app-edited-post-page',
@@ -17,7 +18,7 @@ export class EditedPostPageComponent implements OnInit {
 
   // Additional info fields
 
-  editedCriminal: any = null
+  editedCriminal!: ICriminalInfo
 
   // Paginator
 
@@ -25,7 +26,7 @@ export class EditedPostPageComponent implements OnInit {
   length: number = 0
   itemsPerPage: number = 4
 
-  showedEditedPosts: any = []
+  showedEditedPosts: ICriminalInfo[] = []
 
   constructor(
     public fbiService: FbiService,
@@ -51,7 +52,6 @@ export class EditedPostPageComponent implements OnInit {
       this.length = this.fbiService.editedPosts.length
       this.showedEditedPosts = editedPosts
       if(!this.editedCriminal) {
-        console.log("JK")
         this.chooseElementService.editedCriminalData$.next(editedPosts[0])
       }
 

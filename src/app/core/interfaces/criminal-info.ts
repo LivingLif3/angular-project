@@ -10,4 +10,14 @@ export interface ICriminalInfo {
   eyes: string | null;
   reward_text: string | null;
   description: string | null;
+  added_fields: IFieldInfo
+}
+
+interface IFieldData {
+  type: string
+  value: string | number | boolean
+}
+
+interface IFieldInfo {
+  [key: string]: IFieldData
 }

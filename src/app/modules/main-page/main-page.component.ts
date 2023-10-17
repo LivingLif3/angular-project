@@ -1,8 +1,9 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit} from '@angular/core';
 import {UserAuthService} from "../../core/services/user-auth.service";
 import {concatMap, finalize, map, switchMap, tap} from "rxjs";
 import {IUserData} from "../../core/interfaces/user-interface";
 import {user} from "@angular/fire/auth";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-main-page',
@@ -13,11 +14,12 @@ import {user} from "@angular/fire/auth";
 export class MainPageComponent implements OnInit {
 
   loading: boolean = false
-  userData!: any
+  userData!: IUserData
 
   constructor(
     public authService: UserAuthService,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private destroyRef: DestroyRef
   ) {
   }
 
@@ -29,7 +31,8 @@ export class MainPageComponent implements OnInit {
         return this.authService.getUserRenderData().pipe(
           map((users: any) => users.find((u: any) => u['email'] === user?.email))
         )
-      })
+      }),
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe((userData: any) => {
       this.userData = userData
       this.loading = false
